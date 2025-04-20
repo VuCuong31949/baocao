@@ -34,10 +34,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Hệ thống Phản biện</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+            
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
@@ -72,7 +69,8 @@
                     <div class="journal-card p-3 shadow rounded border bg-white">
                         <h4 class="journal-title">Tạp chí: @item.TieuDe</h4>
                         <p><strong>Tác giả:</strong> @item.TacGia</p>
-                        <p><strong>Tóm tắt:</strong> @item.NoiDung</p>
+                        <p><strong>Tóm tắt:</strong> @item.TieuDe</p>
+                        <p><strong>Từ Khóa:</strong> @item.TuKhoa</p>
                         <p><strong>Ngày gửi:</strong> @item.NgayGui.ToString("dd/MM/yyyy")</p>
                         <div class="d-flex gap-2">
                             <a href="@Url.Action("GuiPhanBien", "PhanBien", new { id = item.IDTapChiBaiViet })" class="btn btn-primary">Xem chi tiết & Nộp phản biện</a>

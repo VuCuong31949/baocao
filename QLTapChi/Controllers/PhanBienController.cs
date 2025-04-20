@@ -132,7 +132,63 @@ namespace QLTapChi.Controllers
             return RedirectToAction("PhanBien");
         }
 
+        [HttpPost]
+        public ActionResult GuiPhanBien(int IDTapChiBaiViet, string NhanXet, int TrangThaiPhanBien, HttpPostedFileBase fileUpload)
+        {
+            using (var db = new QLTapChiEntities())
+            {
+                try
+                {
+                    if (Session["idUser"] == null)
+                    {
+                        TempData["Error"] = "Bạn chưa đăng nhập hoặc không có quyền truy cập.";
+                        return RedirectToAction("DangNhap", "TaiKhoan");
+                    }
 
+                    int idPB = (int)Session["idUser"];
+                    var phanCong = db.PhanCongs.FirstOrDefault(p => p.IDTapChiBaiViet == IDTapChiBaiViet && p.IDNguoiPhanBien == idPB);
+                    if (phanCong == null)
+                    {
+                        TempData["Error"] = "Không tìm thấy phân công.";
+                        return RedirectToAction("PhanBien");
+                    }
+
+                    // Cập nhật trạng thái phân công
+                    phanCong.TrangThaiPhanBien = TrangThaiPhanBien;
+                    phanCong.NgayPhanCong = DateTime.Now;
+
+                    // Lưu nội dung phản biện vào bảng PhanBien
+                    var phanBien = new PhanBien
+                    {
+                        NhanXet = NhanXet.ToString(),
+                        NgayPhanBien = DateTime.Now,
+                        IDTapChiBaiViet = IDTapChiBaiViet,
+                        IDNguoiPhanBien = idPB
+                    };
+
+                    // Xử lý file upload nếu có
+                    if (fileUpload != null && fileUpload.ContentLength > 0)
+                    {
+                        string rootFolder = Server.MapPath("/Content/PhanBien/");
+                        string fileName = Path.GetFileName(fileUpload.FileName);
+                        string pathfile = Path.Combine(rootFolder, fileName);
+                        fileUpload.SaveAs(pathfile);
+                        phanBien.filePB = "Content/PhanBien/" + fileName;
+                    }
+
+                    // Thêm vào DB và lưu
+                    db.PhanBiens.Add(phanBien);
+                    db.SaveChanges();
+                    TempData["Success"] = "Gửi phản biện thành công.";
+                    return RedirectToAction("PhanBien");
+                }
+                catch (Exception ex)
+                {
+                    TempData["Error"] = "Lỗi khi gửi phản biện: " + ex.Message;
+                    return RedirectToAction("PhanBien");
+                }
+            }
+        }
         public ActionResult DownloadFile(int id)
         {
             // Tìm bài báo theo ID

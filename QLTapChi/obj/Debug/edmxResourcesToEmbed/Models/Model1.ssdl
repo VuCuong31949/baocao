@@ -58,10 +58,11 @@
       <PropertyRef Name="IDPhanBien" />
     </Key>
     <Property Name="IDPhanBien" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="NhanXet" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="NhanXet" Type="nvarchar" MaxLength="500" />
     <Property Name="NgayPhanBien" Type="date" Nullable="false" />
     <Property Name="IDTapChiBaiViet" Type="int" Nullable="false" />
     <Property Name="IDNguoiPhanBien" Type="int" Nullable="false" />
+    <Property Name="filePB" Type="varchar" MaxLength="200" />
   </EntityType>
   <EntityType Name="PhanCong">
     <Key>

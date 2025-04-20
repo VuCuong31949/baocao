@@ -61,6 +61,7 @@
     <EntitySetMapping Name="PhanBiens">
       <EntityTypeMapping TypeName="QLTapChiModel.PhanBien">
         <MappingFragment StoreEntitySet="PhanBien">
+          <ScalarProperty Name="filePB" ColumnName="filePB" />
           <ScalarProperty Name="IDPhanBien" ColumnName="IDPhanBien" />
           <ScalarProperty Name="NhanXet" ColumnName="NhanXet" />
           <ScalarProperty Name="NgayPhanBien" ColumnName="NgayPhanBien" />

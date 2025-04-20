@@ -69,12 +69,13 @@
       <PropertyRef Name="IDPhanBien" />
     </Key>
     <Property Name="IDPhanBien" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="NhanXet" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="NhanXet" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
     <Property Name="NgayPhanBien" Type="DateTime" Nullable="false" Precision="0" />
     <Property Name="IDTapChiBaiViet" Type="Int32" Nullable="false" />
     <Property Name="IDNguoiPhanBien" Type="Int32" Nullable="false" />
     <NavigationProperty Name="NguoiDung" Relationship="Self.FK__PhanBien__IDNguo__4AB81AF0" FromRole="PhanBien" ToRole="NguoiDung" />
     <NavigationProperty Name="TapChiBaiViet" Relationship="Self.FK__PhanBien__IDTapC__49C3F6B7" FromRole="PhanBien" ToRole="TapChiBaiViet" />
+    <Property Name="filePB" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="PhanCong">
     <Key>

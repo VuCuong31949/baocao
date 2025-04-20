@@ -19,6 +19,7 @@ namespace QLTapChi.Models
         public System.DateTime NgayPhanBien { get; set; }
         public int IDTapChiBaiViet { get; set; }
         public int IDNguoiPhanBien { get; set; }
+        public string filePB { get; set; }
     
         public virtual NguoiDung NguoiDung { get; set; }
         public virtual TapChiBaiViet TapChiBaiViet { get; set; }

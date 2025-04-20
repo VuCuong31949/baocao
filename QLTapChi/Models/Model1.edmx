@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="QLTapChiModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="QLTapChiModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="BienTapVien">
           <Key>
             <PropertyRef Name="IDBienTapVien" />
@@ -63,10 +63,11 @@
             <PropertyRef Name="IDPhanBien" />
           </Key>
           <Property Name="IDPhanBien" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="NhanXet" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="NhanXet" Type="nvarchar" MaxLength="500" />
           <Property Name="NgayPhanBien" Type="date" Nullable="false" />
           <Property Name="IDTapChiBaiViet" Type="int" Nullable="false" />
           <Property Name="IDNguoiPhanBien" Type="int" Nullable="false" />
+          <Property Name="filePB" Type="varchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="PhanCong">
           <Key>
@@ -376,8 +377,7 @@
             <End Role="XuatBan" EntitySet="XuatBan" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="QLTapChiModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -450,12 +450,13 @@
             <PropertyRef Name="IDPhanBien" />
           </Key>
           <Property Name="IDPhanBien" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="NhanXet" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NhanXet" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="NgayPhanBien" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="IDTapChiBaiViet" Type="Int32" Nullable="false" />
           <Property Name="IDNguoiPhanBien" Type="Int32" Nullable="false" />
           <NavigationProperty Name="NguoiDung" Relationship="Self.FK__PhanBien__IDNguo__4AB81AF0" FromRole="PhanBien" ToRole="NguoiDung" />
           <NavigationProperty Name="TapChiBaiViet" Relationship="Self.FK__PhanBien__IDTapC__49C3F6B7" FromRole="PhanBien" ToRole="TapChiBaiViet" />
+          <Property Name="filePB" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="PhanCong">
           <Key>
@@ -846,6 +847,7 @@
           <EntitySetMapping Name="PhanBiens">
             <EntityTypeMapping TypeName="QLTapChiModel.PhanBien">
               <MappingFragment StoreEntitySet="PhanBien">
+                <ScalarProperty Name="filePB" ColumnName="filePB" />
                 <ScalarProperty Name="IDPhanBien" ColumnName="IDPhanBien" />
                 <ScalarProperty Name="NhanXet" ColumnName="NhanXet" />
                 <ScalarProperty Name="NgayPhanBien" ColumnName="NgayPhanBien" />

@@ -1,0 +1,82 @@
+﻿@model QLTapChi.Models.TapChiBaiViet
+
+@{
+    ViewBag.Title = "GuiPhanBien";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container rb-container-main">
+    <div class="row">
+        <!-- Thông tin tạp chí -->
+        <div class="col-lg-12">
+            <div class="rb-journal-card">
+                <h2>Tạp chí: @Html.DisplayFor(model => model.TieuDe)</h2>
+                <p><strong>Tác giả:</strong> @Html.DisplayFor(model => model.TacGia)</p>
+                <p><strong>Tóm tắt:</strong> @Html.DisplayFor(model => model.NoiDung)</p>
+                <p><strong>Ngày gửi:</strong> @Html.DisplayFor(model => model.NgayGui)</p>
+                <p><strong>Đồng tác giả:</strong> @Html.DisplayFor(model => model.DongTacGia)</p>
+                <p><strong>Từ khóa:</strong> @Html.DisplayFor(model => model.TuKhoa)</p>
+                <p><strong>Lĩnh vực:</strong> @Html.DisplayFor(model => model.LinhVuc.TenLinhVuc)</p>
+                <p><strong>Người gửi:</strong> @Html.DisplayFor(model => model.NguoiDung.HoTen)</p>
+                <p><strong>Trạng thái:</strong> @Html.DisplayFor(model => model.TrangThai)</p>
+                <p><strong>Trạng thái phản biện:</strong> @Html.DisplayFor(model => model.TrangThaiPhanBien)</p>
+                <p><strong>Ghi chú:</strong> @Html.DisplayFor(model => model.GhiChu)</p>
+                <a href="@Url.Action("DownloadFile", "PhanBien", new { id = Model.IDTapChiBaiViet })" class="btn btn-primary">Tải xuống bài viết</a>
+            </div>
+        </div>
+    </div>
+    <!-- Form phản biện -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="rb-review-form">
+                <h3>Gửi Phản biện</h3>
+                @using (Html.BeginForm("GuiPhanBien", "PhanBien", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    @Html.HiddenFor(model => model.IDTapChiBaiViet)
+                    <div class="mb-3">
+                        <label for="NhanXet" class="form-label">Nội dung phản biện</label>
+                        <textarea class="form-control" id="txtDetail" name="NhanXet" rows="6" placeholder="Nội dung phản biện" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="TrangThaiPhanBien" class="form-label">Đánh giá</label>
+                        <select class="form-select" id="TrangThaiPhanBien" name="TrangThaiPhanBien" required>
+                            <option value="">Chọn mức đánh giá</option>
+                            <option value="1">Chấp nhận</option>
+                            <option value="2">Không đạt (chờ chỉnh sửa)</option>
+                            <option value="3">Sửa đổi nhỏ</option>
+                            <option value="4">Sửa đổi lớn</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fileUpload" class="form-label">Tệp đính kèm (nếu có)</label>
+                        <input type="file" class="form-control" id="fileUpload" name="fileUpload">
+                    </div>
+                    <button type="submit" class="btn rb-btn-submit">Gửi phản biện</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+@section  scripts{
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            if (typeof CKEDITOR !== 'undefined') {
+                CKEDITOR.replace('txtDetail', {
+                    customConfig: '/Content/ckeditor/config.js',
+                    extraAllowedContent: 'span',
+                });
+            } else {
+                console.error("CKEDITOR is not defined.");
+            }
+        });
+
+        function BrowseServer(field) {
+            var finder = new CKFinder();
+            finder.selectActionFunction = function (fileUrl) {
+                document.getElementById(field).value = fileUrl;
+            };
+            finder.popup();
+        }
+
+    </script>
+}

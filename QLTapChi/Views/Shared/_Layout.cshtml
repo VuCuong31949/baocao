@@ -83,7 +83,7 @@
                     @if (Session["UserName"] != null)
                     {
                         <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("TKCaNhan", "TaiKhoan", new { id = Session["idUser"] })">
+                            <a class="nav-link username-small" href="@Url.Action("TKCaNhan", "TaiKhoan", new { id = Session["idUser"] })">
                                 <i class="fas fa-user me-1"></i>@Session["UserName"]
                             </a>
                         </li>

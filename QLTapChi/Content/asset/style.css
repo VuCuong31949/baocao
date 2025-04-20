@@ -151,7 +151,7 @@ body {
     }
 .navbar-nav .nav-link {
     font-family: 'Open Sans', sans-serif;
-    font-size: 0.85rem !important; /* Giảm kích thước chữ và tăng độ ưu tiên */
+    font-size: 0.35rem !important; /* Giảm kích thước chữ và tăng độ ưu tiên */
     font-weight: 600;
     color: #333;
     padding: 0.5rem 0.75rem; /* Giảm padding để tiết kiệm không gian */
@@ -290,3 +290,39 @@ body {
     color: #0d6efd;
     font-weight: bold;
 }
+.username-small {
+    font-size: 0.35rem; /* Kích thước chữ nhỏ hơn (có thể chỉnh nhỏ hơn nữa nếu muốn, ví dụ 0.75rem) */
+}
+.rb-container-main {
+    margin-top: 30px;
+}
+
+.rb-journal-card {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.rb-review-form {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+    .rb-review-form h3 {
+        color: #0d6efd;
+        margin-bottom: 20px;
+    }
+
+.rb-btn-submit {
+    background-color: #0d6efd;
+    border: none;
+    padding: 10px 20px;
+}
+
+    .rb-btn-submit:hover {
+        background-color: #0b5ed7;
+    }

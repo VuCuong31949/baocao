@@ -79,10 +79,11 @@ GO
 
 CREATE TABLE PhanBien (
     IDPhanBien INT IDENTITY(1,1) PRIMARY KEY,
-    NhanXet NVARCHAR(500) NOT NULL,
+    NhanXet NVARCHAR(500) NULL,
     NgayPhanBien DATE NOT NULL DEFAULT GETDATE(),
     IDTapChiBaiViet INT NOT NULL,
     IDNguoiPhanBien INT NOT NULL,
+	filePB varchar(200),
     FOREIGN KEY (IDTapChiBaiViet) REFERENCES TapChiBaiViet(IDTapChiBaiViet),
     FOREIGN KEY (IDNguoiPhanBien) REFERENCES NguoiDung(IDNguoiDung)
 );
@@ -96,7 +97,7 @@ CREATE TABLE PhanCong (
     IDTapChiBaiViet INT NOT NULL,
     IDNguoiPhanBien INT NOT NULL,
 	VongPhanBien INT DEFAULT 1,
-    TrangThaiPhanBien INT DEFAULT 0,  -- 0: chưa phản hồi, 1: đạt, 2: không đạt
+    TrangThaiPhanBien INT DEFAULT 0,  -- 0: chưa phản hồi, 1: đạt, 2: không đạt,3: Sửa đổi nhỏ, sửa đổi lớn
     FOREIGN KEY (IDTapChiBaiViet) REFERENCES TapChiBaiViet(IDTapChiBaiViet),
     FOREIGN KEY (IDNguoiPhanBien) REFERENCES NguoiDung(IDNguoiDung)
 );

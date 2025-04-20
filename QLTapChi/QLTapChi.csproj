@@ -1600,12 +1600,14 @@
     <Content Include="Views\PhanBien\PhanBien.cshtml" />
     <Content Include="Views\PhanBien\DanhSachDaChapNhan.cshtml" />
     <Content Include="Views\TapChi\XemPhanBien.cshtml" />
+    <Content Include="Views\PhanBien\GuiPhanBien.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Content\BaiViet\" />
     <Folder Include="Content\ckfinder\userfiles\" />
+    <Folder Include="Content\PhanBien\" />
     <Folder Include="Views\Base\" />
   </ItemGroup>
   <ItemGroup>
