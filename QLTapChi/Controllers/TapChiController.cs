@@ -14,6 +14,10 @@ namespace QLTapChi.Controllers
         QLTapChiEntities db = new QLTapChiEntities();
         public ActionResult DanhSachTapChi()
         {
+            if (Session["idUser"] == null)
+            {
+                return RedirectToAction("DangNhap", "TaiKhoan");
+            }
             int idNguoiDung = (int)Session["idUser"];
             var BaiBao = db.TapChiBaiViets.Where(x => x.IDNguoiGui == idNguoiDung).OrderByDescending(x => x.NgayGui).ToList();
             return View(BaiBao);

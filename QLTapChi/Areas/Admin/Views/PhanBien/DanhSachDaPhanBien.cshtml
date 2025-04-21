@@ -1,0 +1,56 @@
+﻿@model List<QLTapChi.Models.PhanCongViewModel>
+
+@{
+    ViewBag.Title = "Danh Sách Phân Công Đã Phản Biện";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Danh Sách Phân Công Đã Phản Biện</h2>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+@if (Model.Count == 0)
+{
+    <p>Chưa có phân công phản biện nào được xử lý.</p>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Mã phân công</th>
+                <th>Tiêu đề bài viết</th>
+                <th>Tác giả</th>
+                <th>Lĩnh vực</th>
+                <th>Người phản biện</th>
+                <th>Email</th>
+                <th>Trạng thái phản biện</th>
+                <th>Ngày phân công</th>
+                <th>Vòng phản biện</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.IDPhanCong</td>
+                    <td>@item.TieuDeBaiViet</td>
+                    <td>@item.TacGia</td>
+                    <td>@item.TenLinhVuc</td>
+                    <td>@item.NguoiPhanBien</td>
+                    <td>@item.EmailNguoiPhanBien</td>
+                    <td>@item.TrangThaiPhanBienText</td>
+                    <td>@item.NgayPhanCong.ToString("dd/MM/yyyy")</td>
+                    <td>@(item.VongPhanBien.HasValue ? item.VongPhanBien.ToString() : "N/A")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

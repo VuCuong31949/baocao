@@ -178,6 +178,7 @@ namespace QLTapChi.Areas.Admin.Controllers
 
             // Cập nhật trạng thái bài viết
             baiViet.TrangThai = 2; // Đã phân công
+            baiViet.TrangThaiPhanBien = 0;
             db.SaveChanges();
 
             // Thêm bản ghi phân công
@@ -186,7 +187,10 @@ namespace QLTapChi.Areas.Admin.Controllers
                 IDTapChiBaiViet = baiViet.IDTapChiBaiViet,
                 IDNguoiPhanBien = idPhanBien, // Sử dụng idPhanBien từ form, không phải userId
                 NgayPhanCong = DateTime.Now,
-                NgayKetThuc = ngayKetThuc
+                NgayKetThuc = ngayKetThuc,
+                VongPhanBien=0,
+                TrangThaiPhanBien=0,
+                
             };
             db.PhanCongs.Add(phanCong);
             db.SaveChanges();
@@ -199,6 +203,47 @@ namespace QLTapChi.Areas.Admin.Controllers
                 db.SaveChanges();
             }
             TempData["Success"] = "Phân công phản biện thành công.";
+
+            // Lấy thông tin người phản biện
+            var nguoiPhanBien = db.NguoiDungs.FirstOrDefault(nd => nd.IDNguoiDung == idPhanBien);
+            var linhVuc = db.LinhVucs.FirstOrDefault(lv => lv.IDLinhVuc == baiViet.IDLinhVuc);
+
+            if (nguoiPhanBien == null || linhVuc == null)
+            {
+                TempData["Error"] = "Không tìm thấy thông tin người phản biện hoặc lĩnh vực.";
+                return RedirectToAction("BaiVietChoPhanBien");
+            }
+
+            // Đọc template email
+            string content = System.IO.File.ReadAllText(HttpContext.Server.MapPath("~/Content/templates/send_phanbien.html"));
+
+            // Thay thế các placeholder trong template
+            content = content.Replace("{{IDPhanCong}}", phanCong.IDPhanCong.ToString());
+            content = content.Replace("{{TieuDeBaiViet}}", baiViet.TieuDe);
+            content = content.Replace("{{TacGia}}", baiViet.TacGia);
+            content = content.Replace("{{TenLinhVuc}}", linhVuc.TenLinhVuc);
+            content = content.Replace("{{TenNguoiPhanBien}}", nguoiPhanBien.HoTen);
+            content = content.Replace("{{Email}}", nguoiPhanBien.Email);
+            content = content.Replace("{{NgayPhanCong}}", phanCong.NgayPhanCong.ToString("dd/MM/yyyy"));
+            content = content.Replace("{{VongPhanBien}}", phanCong.VongPhanBien.ToString());
+            //content = content.Replace("{{LinkPhanBien}}", $"{Request.Url.Scheme}://{Request.Url.Authority}/PhanBien/PhanBienBaiViet/{phanCong.IDPhanCong}");
+            var link = Url.Action("DangNhap", "TaiKhoan");
+            var fullLink = $"{Request.Url.Scheme}://{Request.Url.Authority}{link}";
+            content = content.Replace("{{LinkPhanBien}}", fullLink);
+
+
+            // Gửi email
+            bool emailSent = SendMail.sendMail(
+                name: "Biên tập viên QLTapChi",
+                subject: $"Phân công phản biện: #{phanCong.IDPhanCong}",
+                content: content,
+                toMail: nguoiPhanBien.Email
+            );
+
+            if (!emailSent)
+            {
+                TempData["Warning"] = "Phân công thành công, nhưng gửi email thất bại.";
+            }
             return RedirectToAction("BaiVietChoPhanBien");
         }
         public ActionResult TuChoiPhanBien(int id)

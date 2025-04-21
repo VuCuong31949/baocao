@@ -1,0 +1,100 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Drawing.Printing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace QuanLyTiecCuoiVaDoCuoi.Thống_Kê_Control
+{
+    public partial class UC_TkDoanhThu : UserControl
+    {
+        private PrintDocument printDocument = new PrintDocument();
+        private string contentToPrint = "";
+        public UC_TkDoanhThu()
+        {
+            InitializeComponent();
+            //if (dgvSanPham.Columns.Count == 0)
+            //{
+            //    dgvSanPham.Columns.Add("TenHang", "Tên hàng");
+            //    dgvSanPham.Columns.Add("SoLuong", "Số lượng");
+            //    dgvSanPham.Columns.Add("DonGia", "Đơn giá");
+            //    dgvSanPham.Columns.Add("ThanhTien", "Thành tiền");
+            //}
+
+            // Gắn sự kiện in nội dung
+            printDocument.PrintPage += PrintDocument_PrintPage;
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnin_Click(object sender, EventArgs e)
+        {
+            // Tạo nội dung hóa đơn từ dữ liệu nhập
+            contentToPrint = GenerateInvoiceContent();
+
+            // Hiển thị hộp thoại xem trước in
+            PrintPreviewDialog preview = new PrintPreviewDialog
+            {
+                Document = printDocument,
+                Width = 800,
+                Height = 600
+            };
+            preview.ShowDialog();
+        }
+        // Tạo nội dung hóa đơn
+        private string GenerateInvoiceContent()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("========== HÓA ĐƠN ==========");
+            sb.AppendLine("Khách hàng: " + txtKhachHang.Text);
+            sb.AppendLine("Ngày: " + DateTime.Now.ToString("dd/MM/yyyy"));
+            sb.AppendLine("-----------------------------------");
+            sb.AppendLine("Tên hàng\tSL\tĐơn giá\tThành tiền");
+
+            decimal tongTien = 0;
+
+            foreach (DataGridViewRow row in dgvSanPham.Rows)
+            {
+                if (row.IsNewRow) continue;
+
+                string ten = row.Cells["TenHang"].Value?.ToString() ?? "";
+                string sl = row.Cells["SoLuong"].Value?.ToString() ?? "";
+                string gia = row.Cells["DonGia"].Value?.ToString() ?? "";
+                string thanhTien = row.Cells["ThanhTien"].Value?.ToString() ?? "";
+
+                sb.AppendLine($"{ten}\t{sl}\t{gia}\t{thanhTien}");
+
+                if (decimal.TryParse(thanhTien, out decimal tien))
+                    tongTien += tien;
+            }
+
+            sb.AppendLine("-----------------------------------");
+            sb.AppendLine("TỔNG CỘNG: " + tongTien.ToString("N0") + " VNĐ");
+
+            return sb.ToString();
+        }
+
+        // In nội dung hóa đơn
+        private void PrintDocument_PrintPage(object sender, PrintPageEventArgs e)
+        {
+            Font font = new Font("Arial", 10);
+            float y = e.MarginBounds.Top;
+            float x = e.MarginBounds.Left;
+
+            e.Graphics.DrawString(contentToPrint, font, Brushes.Black, x, y);
+        }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+    }
+}

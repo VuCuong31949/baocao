@@ -115,7 +115,7 @@
                     </td>
                     <td>
                         <a href="@Url.Action("DownloadFile", "TapChi", new { id = item.IDTapChiBaiViet })" class="btn btn-sm btn-primary">Tải bài</a>
-                        @if (item.TrangThaiPhanBien == 2 || item.TrangThaiPhanBien == 3 || item.TrangThaiPhanBien == 4)
+                        @if (item.TrangThaiPhanBien == 1 || item.TrangThaiPhanBien == 2 || item.TrangThaiPhanBien == 3 || item.TrangThaiPhanBien == 4)
                         {
                             <a href="@Url.Action("XemPhanBien", "TapChi", new { id = item.IDTapChiBaiViet })" class="btn btn-sm btn-info">Xem phản biện</a>
                         }

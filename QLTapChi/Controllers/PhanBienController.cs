@@ -14,6 +14,10 @@ namespace QLTapChi.Controllers
         // GET: PhanBien
         public ActionResult PhanBien()
         {
+            if (Session["idUser"] == null )
+            {
+                return RedirectToAction("DangNhap", "TaiKhoan");
+            }
             int idPB = (int)Session["idUser"];
             var phanbien = db.NguoiDungs.FirstOrDefault(b => b.IDNguoiDung == idPB);
 
@@ -132,13 +136,41 @@ namespace QLTapChi.Controllers
             return RedirectToAction("PhanBien");
         }
 
+        public ActionResult GuiPhanBien(int id)
+        {
+            // Kiểm tra đăng nhập
+            if (Session["idUser"] == null)
+            {
+                TempData["Error"] = "Bạn chưa đăng nhập hoặc không có quyền truy cập.";
+                return RedirectToAction("DangNhap", "TaiKhoan");
+            }
+
+            // Lấy ID người phản biện từ session
+            int idPB = (int)Session["idUser"];
+
+            // Tìm bài viết theo ID
+            var baiViet = db.TapChiBaiViets.FirstOrDefault(b => b.IDTapChiBaiViet == id);
+            if (baiViet == null)
+            {
+                TempData["Error"] = "Không tìm thấy bài viết.";
+                return RedirectToAction("PhanBien");
+            }
+
+            // Kiểm tra xem người dùng có được phân công phản biện bài này không
+            var phanCong = db.PhanCongs.FirstOrDefault(p => p.IDTapChiBaiViet == id && p.IDNguoiPhanBien == idPB);
+            if (phanCong == null)
+            {
+                TempData["Error"] = "Bạn không được phân công phản biện bài viết này.";
+                return RedirectToAction("PhanBien");
+            }
+
+            // Trả về view với thông tin bài viết
+            return View(baiViet);
+        }
         [HttpPost]
         public ActionResult GuiPhanBien(int IDTapChiBaiViet, string NhanXet, int TrangThaiPhanBien, HttpPostedFileBase fileUpload)
         {
-            using (var db = new QLTapChiEntities())
-            {
-                try
-                {
+
                     if (Session["idUser"] == null)
                     {
                         TempData["Error"] = "Bạn chưa đăng nhập hoặc không có quyền truy cập.";
@@ -165,15 +197,14 @@ namespace QLTapChi.Controllers
                         IDTapChiBaiViet = IDTapChiBaiViet,
                         IDNguoiPhanBien = idPB
                     };
-
                     // Xử lý file upload nếu có
                     if (fileUpload != null && fileUpload.ContentLength > 0)
                     {
                         string rootFolder = Server.MapPath("/Content/PhanBien/");
-                        string fileName = Path.GetFileName(fileUpload.FileName);
-                        string pathfile = Path.Combine(rootFolder, fileName);
+                        string pathfile = rootFolder + fileUpload.FileName;
+                        //string pathfile = Path.Combine(rootFolder, fileName);
                         fileUpload.SaveAs(pathfile);
-                        phanBien.filePB = "Content/PhanBien/" + fileName;
+                        phanBien.filePB = "Content/PhanBien/" + fileUpload.FileName;
                     }
 
                     // Thêm vào DB và lưu
@@ -181,13 +212,7 @@ namespace QLTapChi.Controllers
                     db.SaveChanges();
                     TempData["Success"] = "Gửi phản biện thành công.";
                     return RedirectToAction("PhanBien");
-                }
-                catch (Exception ex)
-                {
-                    TempData["Error"] = "Lỗi khi gửi phản biện: " + ex.Message;
-                    return RedirectToAction("PhanBien");
-                }
-            }
+
         }
         public ActionResult DownloadFile(int id)
         {
@@ -214,6 +239,11 @@ namespace QLTapChi.Controllers
 
             // Trả về file dưới dạng download
             return File(filePath, "application/octet-stream", fileName);
+        }
+        public ActionResult DanhSachdaPhanBien()
+        {
+            var ds = db.PhanBiens.ToList();
+            return View(ds);
         }
     }
 }

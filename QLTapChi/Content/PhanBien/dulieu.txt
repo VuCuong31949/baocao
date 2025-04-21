@@ -1,0 +1,55 @@
+INSERT INTO SanhCuoi (TenSC, SoLuongBan, DienTich, LoaiSanh, LoaiDen, SoLuongDen, LoaiMayLanh, SLMayLanh, LoaiMayChieu, LoaiBackdrop, LoaiManHinh, TongChiPhi)
+VALUES 
+(N'Sảnh Hoa Sen', 30, N'300m2', N'Cao cấp', N'LED', 20, N'Daikin', 4, N'Sony', N'Vàng đồng', N'Màn hình LED', 20000000),
+(N'Sảnh Hồng', 20, N'200m2', N'Trung bình', N'Halogen', 10, N'Panasonic', 2, N'Epson', N'Hồng pastel', N'Màn chiếu', 15000000);
+
+INSERT INTO ThietBi (TenTB, LoaiTB, SoLuongNhap, SoLuongHu, SoLuongTon, ViTriSD, HinhAnh, GhiChu, Gia)
+VALUES 
+(N'Gói Thiết Bị 1', N'Âm thanh', 10, 0, 10, N'Sảnh Hoa Sen', 'img1.jpg', N'Full bộ loa', 3000000),
+(N'Gói Thiết Bị 2', N'Ánh sáng', 15, 1, 14, N'Sảnh Hồng', 'img2.jpg', N'Đèn LED 7 màu', 2000000);
+INSERT INTO MonAn (TenMA, DanhMuc, GiaGoc, LoiNhuan, GiaTong, MoTa, TrangThai)
+VALUES 
+(N'Gói Món Ăn A', N'Tiệc chính', 5000000, 20, 6000000, N'Thực đơn truyền thống', N'Còn món'),
+(N'Gói Món Ăn B', N'Tiệc phụ', 3000000, 15, 3450000, N'Thực đơn nhẹ', N'Còn món');
+
+INSERT INTO [dbo].[DichVu] (TenDV, DanhMuc, GhiChu, SoGioDichVu, TrangThai, MoTa, Gia)
+VALUES
+(N'Dịch vụ tiệc cưới', N'Tiệc cưới', N'Dịch vụ trọn gói cho tiệc cưới', 4, N'Hoạt động', N'Dịch vụ bao gồm thực đơn, trang trí, âm thanh ánh sáng', 12000000),
+(N'Dịch vụ trang trí', N'Tiệc cưới', N'Trang trí sân khấu', 2, N'Hoạt động', N'Trang trí cho lễ cưới và tiệc', 5000000),
+(N'Dịch vụ âm thanh ánh sáng', N'Tiệc cưới', N'Dịch vụ âm thanh ánh sáng cho sảnh cưới', 3, N'Hoạt động', N'Cung cấp thiết bị âm thanh ánh sáng cho sự kiện', 8000000),
+(N'Dịch vụ chụp ảnh cưới', N'Dịch vụ', N'Gói chụp ảnh cưới', 5, N'Hoạt động', N'Chụp ảnh trong suốt buổi lễ cưới và tiệc', 6000000),
+(N'Dịch vụ MC', N'Tiệc cưới', N'MC cho tiệc cưới', 4, N'Hoạt động', N'MC chuyên nghiệp dẫn chương trình tiệc cưới', 3000000);
+
+INSERT INTO TiecCuoi (
+    TenKH, NgayDat, ThoiGianBatDau, ThoiGianKetThuc, TenCoDau, TenChuRe, TenSanh, SlBan,
+    GoiAnTiec, GoiDichVu, LoaiThiepCuoi, GoiThucDon, GoiNuoc, GoiThietBi, GoiGiaTri, DonGiaTiec
+)
+VALUES
+(N'Nguyễn Văn A', '2025-02-12', '18:00', '22:00', N'Ngọc', N'Minh', N'Sảnh Hoa Sen', 20,
+ N'Gói Món Ăn A', N'Dịch vụ Trang trí', N'Thiệp Hồng', N'Gói Món Ăn A', N'Dịch vụ Chụp ảnh', N'Gói Thiết Bị 1', N'Trang trí cao cấp', 45000000),
+
+(N'Trần Thị B', '2025-02-13', '17:00', '21:00', N'Lan', N'Tùng', N'Sảnh Hồng', 15,
+ N'Gói Món Ăn B', N'Dịch vụ Chụp ảnh', N'Thiệp Vàng', N'Gói Món Ăn B', N'Dịch vụ Trang trí', N'Gói Thiết Bị 2', N'Trang trí cơ bản', 30000000);
+
+
+ALTER TABLE ThiepCuoi ADD TenThiepCuoi NVARCHAR(200); -- Nếu chưa có
+
+INSERT INTO ThiepCuoi (TenThiepCuoi, HinhAnh, KichThuoc, ChatLieu, MauSac, NhaCungCap, Gia, KhuyenMai, TrangThai, HoaTiec)
+VALUES 
+(N'Thiệp Hồng', 'thiep1.jpg', N'10x15', N'Giấy mỹ thuật', N'Hồng', N'In ấn ABC', 10000, 0, N'Có sẵn', N'Hoa văn cổ điển'),
+(N'Thiệp Vàng', 'thiep2.jpg', N'10x20', N'Giấy kraft', N'Vàng', N'In ấn XYZ', 15000, 2000, N'Có sẵn', N'Hiện đại');
+
+SELECT SUM(DonGiaTiec) AS TongDonGiaTiec
+FROM TiecCuoi
+WHERE NgayDat BETWEEN '2025-02-10' AND '2025-02-15';
+
+
+SELECT 
+    SUM(ISNULL(sc.TongChiPhi, 0) + ISNULL(ma.GiaGoc, 0) + ISNULL(tb.Gia, 0) + ISNULL(dv.Gia, 0) + ISNULL(thc.Gia, 0)) AS TongGiaGoc
+FROM TiecCuoi tc
+JOIN SanhCuoi sc ON tc.TenSanh = sc.TenSC 
+JOIN ThietBi tb ON tc.GoiThietBi = tb.TenTB
+JOIN MonAn ma ON tc.GoiThucDon = ma.TenMA
+JOIN DichVu dv ON tc.GoiDichVu = dv.TenDV
+JOIN ThiepCuoi thc ON tc.LoaiThiepCuoi = thc.TenThiepCuoi
+WHERE tc.NgayDat BETWEEN'2025-02-10' AND '2025-02-15';

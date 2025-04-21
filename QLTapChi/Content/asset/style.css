@@ -151,7 +151,7 @@ body {
     }
 .navbar-nav .nav-link {
     font-family: 'Open Sans', sans-serif;
-    font-size: 0.35rem !important; /* Giảm kích thước chữ và tăng độ ưu tiên */
+    font-size: 0.67rem !important; /* Giảm kích thước chữ và tăng độ ưu tiên */
     font-weight: 600;
     color: #333;
     padding: 0.5rem 0.75rem; /* Giảm padding để tiết kiệm không gian */
@@ -250,7 +250,7 @@ body {
         padding: 0.5rem 1rem;
     }
 }
-}
+
 .container-main {
     margin-top: 30px;
 }

@@ -137,6 +137,7 @@
     <Compile Include="Areas\Admin\Controllers\BaiBaoController.cs" />
     <Compile Include="Areas\Admin\Controllers\BienTapViensController.cs" />
     <Compile Include="Areas\Admin\Controllers\LinhVucController.cs" />
+    <Compile Include="Areas\Admin\Controllers\PhanBienController.cs" />
     <Compile Include="Areas\Admin\Controllers\PhanCongController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -184,6 +185,8 @@
     <Compile Include="Models\PhanCongBienTap.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PhanCongViewModel.cs" />
+    <Compile Include="Models\SendMail.cs" />
     <Compile Include="Models\SoTapChi.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -1481,6 +1484,7 @@
     <Content Include="Content\clients\dist\js\pages\dashboard3.js" />
     <Content Include="Content\Images\Logo.jpg" />
     <Content Include="Content\Images\Logo.png" />
+    <Content Include="Content\send_phanbien.html" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -1564,6 +1568,7 @@
     <Content Include="Models\Model1.edmx.diagram">
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
+    <Content Include="Areas\Admin\Views\PhanBien\DanhSachDaPhanBien.cshtml" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />
