@@ -8,6 +8,7 @@ namespace QLTapChi.Models
     public class PhanCongViewModel
     {
         public int IDPhanCong { get; set; }
+        public int IDNguoiPhanBien { get; set; }
         public string TieuDeBaiViet { get; set; }
         public string TacGia { get; set; }
         public string TenLinhVuc { get; set; }

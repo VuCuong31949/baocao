@@ -1,10 +1,37 @@
 ﻿@model List<QLTapChi.Models.PhanCongViewModel>
-
 @{
-    ViewBag.Title = "Danh Sách Phân Công Đã Phản Biện";
-    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.Title = "DSDaPhanBien";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
 
+    .navbar {
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .gap-2 {
+        gap: 10px;
+    }
+</style>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" href="@Url.Action("PhanBien", "PhanBien")">Bài chờ phản biện</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("DanhSachDaChapNhan", "PhanBien")">Hàng chờ tải/nộp</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("DSDaPhanBien", "PhanBien")">Bài đã phản biện</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
 <h2>Danh Sách Phân Công Đã Phản Biện</h2>
 
 @if (TempData["Success"] != null)

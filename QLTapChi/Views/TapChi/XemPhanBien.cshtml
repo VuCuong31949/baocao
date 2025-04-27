@@ -1,159 +1,129 @@
 ﻿@model QLTapChi.Models.XemPhanBienViewModel
 
-@{
-    ViewBag.Title = "Xem phản biện bài viết";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+<div class="container">
 
-<style>
-    body {
-        background-color: #f4f6f9;
-        font-family: 'Arial', sans-serif;
-    }
 
-    .navbar {
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    .container-main {
-        margin-top: 30px;
-    }
-
-    .journal-card {
-        background-color: #fff;
-        border-radius: 10px;
-        padding: 20px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        margin-bottom: 20px;
-    }
-
-    .gap-2 {
-        gap: 10px;
-    }
-</style>
-
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">Hệ thống Tạp chí</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="@Url.Action("DanhSachTapChi", "TapChi")">Danh sách bài viết</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="@Url.Action("Add", "TapChi")">Gửi bài viết mới</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="@Url.Action("DangXuat", "TaiKhoan")">Đăng xuất</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
-
-<div class="container container-main">
-    <h2 class="mb-4">Chi tiết phản biện bài viết</h2>
-
-    @if (TempData["Success"] != null)
-    {
-        <div class="alert alert-success">@TempData["Success"]</div>
-    }
+    <!-- Hiển thị thông báo lỗi nếu có -->
     @if (TempData["Error"] != null)
     {
-        <div class="alert alert-danger">@TempData["Error"]</div>
+        <div class="alert alert-danger">
+            @TempData["Error"]
+            <a href="@Url.Action("Add", "TapChi")" class="btn btn-primary">Nộp bài viết mới</a>
+        </div>
     }
 
-    <!-- Thông tin bài viết -->
-    <div class="row">
-        <div class="col-lg-12 mb-3">
-            <div class="journal-card p-3 shadow rounded border bg-white">
-                <h4 class="journal-title">Bài viết: @Model.BaiViet.TieuDe</h4>
-                <p><strong>Tác giả:</strong> @Model.BaiViet.TacGia</p>
-                <p><strong>Ngày gửi:</strong> @Model.BaiViet.NgayGui?.ToString("dd/MM/yyyy")</p>
-                <p>
-                    <strong>Trạng thái duyệt:</strong>
-                    @switch (Model.BaiViet.TrangThai)
-                    {
-                        case 0:
-                            <span class="badge bg-warning">Chờ duyệt</span>
-                            break;
-                        case 1:
-                            <span class="badge bg-success">Đã duyệt</span>
-                            break;
-                        case 2:
-                            <span class="badge bg-info">Đã phân công phản biện</span>
-                            break;
-                        case 4:
-                            <span class="badge bg-primary">Xuất bản</span>
-                            break;
-                        default:
-                            <span class="badge bg-secondary">Không xác định</span>
-                            break;
-                    }
-                </p>
-                <p>
-                    <strong>Trạng thái phản biện:</strong>
-                    @switch (Model.BaiViet.TrangThaiPhanBien)
-                    {
-                        case 0:
-                            <span class="badge bg-warning">Chờ phản biện</span>
-                            break;
-                        case 1:
-                            <span class="badge bg-info">Đang phản biện</span>
-                            break;
-                        case 2:
-                            <span class="badge bg-success">Chấp nhận</span>
-                            break;
-                        case 3:
-                            <span class="badge bg-primary">Sửa đổi</span>
-                            break;
-                        case 4:
-                            <span class="badge bg-danger">Từ chối</span>
-                            break;
-                        default:
-                            <span class="badge bg-secondary">Không xác định</span>
-                            break;
-                    }
-                </p>
-                <div class="d-flex gap-2">
-                    <a href="@Url.Action("DownloadFile", "TapChi", new { id = Model.BaiViet.IDTapChiBaiViet })" class="btn btn-primary">Tải bài viết</a>
-                    @if (Model.BaiViet.TrangThaiPhanBien == 3 || Model.BaiViet.TrangThai == 0)
-                    {
-                        <a href="@Url.Action("CapNhatTapChi", "TapChi", new { id = Model.BaiViet.IDTapChiBaiViet })" class="btn btn-warning">Sửa bài viết</a>
-                    }
-                </div>
+    <!-- Hiển thị thông báo thành công nếu có -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+
+    <h3>Thông tin bài viết</h3>
+    <p><strong>Tiêu đề:</strong> @Model.BaiViet.TieuDe</p>
+    <p><strong>Tác giả:</strong> @Model.BaiViet.TacGia</p>
+    <p><strong>Ngày gửi:</strong> @Model.BaiViet.NgayGui.ToString("dd/MM/yyyy")</p>
+
+    <h3>Danh sách phản biện</h3>
+    @foreach (var pb in Model.DanhSachPhanCong)
+    {
+        var phanBien = Model.DanhSachPhanBien.FirstOrDefault(p => p.IDNguoiPhanBien == pb.IDNguoiPhanBien && p.IDTapChiBaiViet == Model.BaiViet.IDTapChiBaiViet);
+        <div class="review-item mb-4">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Người phản biện</th>
+                        <th>Vòng phản biện</th>
+                        <th>Ngày phản biện</th>
+                        <th>Trạng thái</th>
+                        <th>File phản biện</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@pb.NguoiPhanBien</td>
+                        <td>@(pb.VongPhanBien.HasValue ? pb.VongPhanBien.Value.ToString() : "Chưa xác định")</td> <!-- Sửa lỗi: Chuyển int thành string -->
+                        <td>@(phanBien != null ? phanBien.NgayPhanBien.ToString("dd/MM/yyyy") : "Chưa phản biện")</td>
+                        <td>
+                            @switch (pb.TrangThaiPhanBien)
+                            {
+                                case 1:
+                                    @: Đạt
+                                    break;
+                                case 2:
+                                    @: Không đạt
+                                    break;
+                                case 3:
+                                    @: Sửa đổi nhỏ
+                                    break;
+                                case 4:
+                                    @: Sửa đổi lớn
+                                    break;
+                                default:
+                                    @: Chưa phản hồi
+                                    break;
+                            }
+                        </td>
+                        <td>
+                            @if (phanBien != null && !string.IsNullOrEmpty(phanBien.filePB))
+                            {
+                                <a href="@Url.Action("DownloadFile", "PhanBien", new { id = Model.BaiViet.IDTapChiBaiViet })">Tải file</a>
+                            }
+                            else
+                            {
+                                <span>Không có file</span>
+                            }
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Phần nhận xét hiển thị bên dưới bảng -->
+            <div class="review-comment mt-3">
+                <h4>Nhận xét</h4>
+                @using (Html.BeginForm("CapNhatNhanXet", "PhanBien", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.Hidden("IDTapChiBaiViet", Model.BaiViet.IDTapChiBaiViet)
+                    @Html.Hidden("IDNguoiPhanBien", pb.IDNguoiPhanBien)
+                    <textarea class="form-control ckeditor-nhanxet" name="NhanXet" rows="4">@(phanBien != null ? phanBien.NhanXet : "")</textarea>
+                    <button type="submit" class="btn btn-primary mt-2">Lưu nhận xét</button>
+                }
             </div>
         </div>
-    </div>
+    }
 
-    <!-- Danh sách phản biện -->
-    <h4 class="mb-4">Phản biện</h4>
-    <div class="row">
-        @if (Model.DanhSachPhanBien.Any())
-        {
-            foreach (var phanBien in Model.DanhSachPhanBien)
-            {
-                <div class="col-lg-12 mb-3">
-                    <div class="journal-card p-3 shadow rounded border bg-white">
-                        <h5>Phản biện ngày @phanBien.NgayPhanBien.ToString("dd/MM/yyyy")</h5>
-                        <p><strong>Nhận xét:</strong> @phanBien.NhanXet</p>
-                        @if (phanBien.NhanXet.Contains("Tệp đính kèm:"))
-                        {
-                            <p><strong>File đính kèm:</strong> <a href="@Url.Action("DownloadPhanBienFile", "TapChi", new { idPhanBien = phanBien.IDPhanBien })" class="btn btn-primary">Tải file phản biện</a></p>
-                        }
-                    </div>
-                </div>
-            }
-        }
-        else
-        {
-            <div class="col-lg-12">
-                <div class="alert alert-info">Chưa có phản biện cho bài viết này.</div>
-            </div>
-        }
-    </div>
+    <!-- Hiển thị nút chỉnh sửa nếu bài viết không được chấp nhận và chưa bị từ chối vĩnh viễn -->
+    @if (Model.BaiViet.TrangThaiPhanBien != 4 && Model.DanhSachPhanCong.Any(pc => pc.TrangThaiPhanBien == 2 || pc.TrangThaiPhanBien == 3 || pc.TrangThaiPhanBien == 4))
+    {
+        <a href="@Url.Action("ChinhSuaSauPhanBien", "TapChi", new { id = Model.BaiViet.IDTapChiBaiViet })" class="btn btn-primary">Chỉnh sửa bài viết</a>
+    }
 </div>
+@section  scripts{
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            if (typeof CKEDITOR !== 'undefined') {
+                CKEDITOR.replace('txtDetail', {
+                    customConfig: '/Content/ckeditor/config.js',
+                    extraAllowedContent: 'span',
+                });
+                CKEDITOR.replace('txtGhiChu', {
+                    customConfig: '/Content/ckeditor/config.js',
+                    extraAllowedContent: 'span',
+                });
+            } else {
+                console.error("CKEDITOR is not defined.");
+            }
+        });
+
+        function BrowseServer(field) {
+            var finder = new CKFinder();
+            finder.selectActionFunction = function (fileUrl) {
+                document.getElementById(field).value = fileUrl;
+            };
+            finder.popup();
+        }
+
+    </script>
+}

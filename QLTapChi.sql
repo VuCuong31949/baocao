@@ -97,7 +97,7 @@ CREATE TABLE PhanCong (
     IDTapChiBaiViet INT NOT NULL,
     IDNguoiPhanBien INT NOT NULL,
 	VongPhanBien INT DEFAULT 1,
-    TrangThaiPhanBien INT DEFAULT 0,  -- 0: chưa phản hồi, 1: đạt, 2: không đạt,3: Sửa đổi nhỏ, sửa đổi lớn
+    TrangThaiPhanBien INT DEFAULT 0,  -- 0: chưa phản hồi, 1: đạt, 2: không đạt,3: Sửa đổi nhỏ, sửa đổi lớn, 4 từ chối
     FOREIGN KEY (IDTapChiBaiViet) REFERENCES TapChiBaiViet(IDTapChiBaiViet),
     FOREIGN KEY (IDNguoiPhanBien) REFERENCES NguoiDung(IDNguoiDung)
 );

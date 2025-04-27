@@ -1606,6 +1606,8 @@
     <Content Include="Views\PhanBien\DanhSachDaChapNhan.cshtml" />
     <Content Include="Views\TapChi\XemPhanBien.cshtml" />
     <Content Include="Views\PhanBien\GuiPhanBien.cshtml" />
+    <Content Include="Views\PhanBien\DSDaPhanBien.cshtml" />
+    <Content Include="Views\TapChi\ChinhSuaSauPhanBien.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

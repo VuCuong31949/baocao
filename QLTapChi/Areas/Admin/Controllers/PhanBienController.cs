@@ -29,7 +29,8 @@ namespace QLTapChi.Areas.Admin.Controllers
                                     join tcbv in db.TapChiBaiViets on pc.IDTapChiBaiViet equals tcbv.IDTapChiBaiViet
                                     join nd in db.NguoiDungs on pc.IDNguoiPhanBien equals nd.IDNguoiDung
                                     join lv in db.LinhVucs on tcbv.IDLinhVuc equals lv.IDLinhVuc
-                                    where pc.IDNguoiPhanBien == idPB && pc.TrangThaiPhanBien != 0
+                                    where  pc.TrangThaiPhanBien != 0
+                                    //where pc.IDNguoiPhanBien == idPB && pc.TrangThaiPhanBien != 0
                                     select new PhanCongViewModel
                                     {
                                         IDPhanCong = pc.IDPhanCong,

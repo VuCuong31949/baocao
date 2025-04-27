@@ -124,6 +124,51 @@ namespace QLTapChi.Controllers
         {
             return View("DangNhap");
         }
+        //[HttpPost]
+        //public ActionResult DangNhap(string email, string matkhau)
+        //{
+        //    if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(matkhau))
+        //    {
+        //        ViewBag.Error = "Vui lòng nhập đầy đủ thông tin.";
+        //        return View();
+        //    }
+
+        //    var f_matkhau = Hashing.ToSHA256(matkhau);
+
+        //    // 1. Kiểm tra Biên Tập Viên
+        //    var btv = db.BienTapViens.FirstOrDefault(s => s.Email.Trim() == email.Trim() && s.MatKhau.Equals(f_matkhau));
+        //    if (btv != null)
+        //    {
+        //        Session["UserName"] = btv.HoTen;
+        //        Session["idUser"] = btv.IDBienTapVien;
+        //        Session["LoaiNguoiDung"] = "BienTapVien"; // Có thể dùng để phân quyền view
+        //        Session["LoaiBienTapVien"] = btv.LoaiBienTapVien; // Tổng hoặc PhuTrach
+        //        CookieHelper.create("UserName", btv.HoTen, DateTime.Now.AddDays(1));
+        //        CookieHelper.create("UserId", btv.IDBienTapVien.ToString(), DateTime.Now.AddDays(1));
+        //        CookieHelper.create("LoaiNguoiDung", "BienTapVien", DateTime.Now.AddDays(1));
+        //        CookieHelper.create("LoaiBienTapVien", btv.LoaiBienTapVien, DateTime.Now.AddDays(1));
+        //        return RedirectToAction("DanhSachBTV", "BienTapViens", new { area = "Admin" });
+        //    }
+
+        //    // 2. Kiểm tra Người Dùng (Tác giả, phản biện,...)
+        //    var nguoiDung = db.NguoiDungs.FirstOrDefault(s => s.Email.Trim() == email.Trim() && s.MatKhau.Equals(f_matkhau));
+        //    var loaiND = nguoiDung.PhanBien;
+        //    if (nguoiDung != null)
+        //    {
+        //        Session["UserName"] = nguoiDung.HoTen;
+        //        Session["idUser"] = nguoiDung.IDNguoiDung;
+        //        string loaiNguoiDung = nguoiDung.PhanBien == true ? "PhanBien" : "NguoiDung";
+        //        Session["LoaiNguoiDung"] = loaiNguoiDung;
+        //        CookieHelper.create("UserName", nguoiDung.HoTen, DateTime.Now.AddDays(1));
+        //        CookieHelper.create("UserId", nguoiDung.IDNguoiDung.ToString(), DateTime.Now.AddDays(1));
+        //        CookieHelper.create("LoaiNguoiDung", loaiNguoiDung, DateTime.Now.AddDays(1));
+        //        return RedirectToAction("TKCaNhan", "TaiKhoan", new { id = nguoiDung.IDNguoiDung });
+        //    }
+
+        //    // Sai tài khoản hoặc mật khẩu
+        //    ViewBag.Error = "* Tài khoản hoặc mật khẩu không đúng !";
+        //    return View();
+        //}
         [HttpPost]
         public ActionResult DangNhap(string email, string matkhau)
         {
@@ -152,9 +197,9 @@ namespace QLTapChi.Controllers
 
             // 2. Kiểm tra Người Dùng (Tác giả, phản biện,...)
             var nguoiDung = db.NguoiDungs.FirstOrDefault(s => s.Email.Trim() == email.Trim() && s.MatKhau.Equals(f_matkhau));
-            var loaiND = nguoiDung.PhanBien;
             if (nguoiDung != null)
             {
+                var loaiND = nguoiDung.PhanBien; // Di chuyển dòng này vào trong if
                 Session["UserName"] = nguoiDung.HoTen;
                 Session["idUser"] = nguoiDung.IDNguoiDung;
                 string loaiNguoiDung = nguoiDung.PhanBien == true ? "PhanBien" : "NguoiDung";
@@ -169,7 +214,6 @@ namespace QLTapChi.Controllers
             ViewBag.Error = "* Tài khoản hoặc mật khẩu không đúng !";
             return View();
         }
-
         public ActionResult DangXuat()
         {
             Session.Clear();

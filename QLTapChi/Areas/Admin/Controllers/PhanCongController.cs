@@ -188,7 +188,7 @@ namespace QLTapChi.Areas.Admin.Controllers
                 IDNguoiPhanBien = idPhanBien, // Sử dụng idPhanBien từ form, không phải userId
                 NgayPhanCong = DateTime.Now,
                 NgayKetThuc = ngayKetThuc,
-                VongPhanBien=0,
+                VongPhanBien=1,
                 TrangThaiPhanBien=0,
                 
             };
