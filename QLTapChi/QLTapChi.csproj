@@ -139,6 +139,7 @@
     <Compile Include="Areas\Admin\Controllers\LinhVucController.cs" />
     <Compile Include="Areas\Admin\Controllers\PhanBienController.cs" />
     <Compile Include="Areas\Admin\Controllers\PhanCongController.cs" />
+    <Compile Include="Areas\Admin\Controllers\XuatBanController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PhanBienController.cs" />
@@ -151,6 +152,7 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CookieHelper.cs" />
+    <Compile Include="Models\DanhSachXuatBanViewModel.cs" />
     <Compile Include="Models\Hashing.cs" />
     <Compile Include="Models\LichSuChinhSua.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -1569,6 +1571,8 @@
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
     <Content Include="Areas\Admin\Views\PhanBien\DanhSachDaPhanBien.cshtml" />
+    <Content Include="Areas\Admin\Views\XuatBan\DanhSachDaPhanBien.cshtml" />
+    <Content Include="Areas\Admin\Views\XuatBan\XuatBan.cshtml" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />

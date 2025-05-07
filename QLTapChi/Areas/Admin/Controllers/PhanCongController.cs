@@ -49,7 +49,7 @@ namespace QLTapChi.Areas.Admin.Controllers
         }
 
         // POST: Phân công biên tập viên chịu trách nhiệm
- 
+
         [HttpPost]
         public ActionResult PhanCong(int idBaiViet, int idBienTapVien)
         {
@@ -110,6 +110,7 @@ namespace QLTapChi.Areas.Admin.Controllers
             TempData["Success"] = "Phân công biên tập viên thành công.";
             return RedirectToAction("BaiVietChoDuyet");
         }
+
         public ActionResult BaiVietChoPhanBien()
         {
             int idBTV = (int)Session["idUser"];
@@ -124,7 +125,10 @@ namespace QLTapChi.Areas.Admin.Controllers
 
             var baiChoPhanBien = (from b in db.TapChiBaiViets
                                   join p in db.PhanCongBienTaps on b.IDTapChiBaiViet equals p.IDTapChiBaiViet
-                                  where b.TrangThai == 1 && p.IDBienTapVien == idBTV
+                                  where p.IDBienTapVien == idBTV &&
+                                 (b.TrangThai == 1 || // Chưa phân công phản biện
+                                (b.TrangThai == 2 && // Đã phân công nhưng chưa đủ 2 người
+                                 db.PhanCongs.Count(pc => pc.IDTapChiBaiViet == b.IDTapChiBaiViet) < 2))
                                   orderby b.NgayGui descending
                                   select b).ToList();
             int soBaiChoPB = baiChoPhanBien.Count;
@@ -136,6 +140,116 @@ namespace QLTapChi.Areas.Admin.Controllers
           
             return View( baiChoPhanBien);
         }
+        //[HttpPost]
+        //public ActionResult PhanCongPhanBien(int idBaiViet, int idPhanBien, DateTime ngayKetThuc)
+        //{
+        //    // Kiểm tra đăng nhập
+        //    if (Session["idUser"] == null || Session["LoaiBienTapVien"] == null)
+        //    {
+        //        TempData["Error"] = "Bạn chưa đăng nhập hoặc không có quyền truy cập.";
+        //        return RedirectToAction("DangNhap", "TaiKhoan");
+        //    }
+
+        //    // Tìm bài viết
+        //    var baiViet = db.TapChiBaiViets.Find(idBaiViet);
+        //    if (baiViet == null)
+        //    {
+        //        TempData["Error"] = "Không tìm thấy bài viết!";
+        //        return RedirectToAction("BaiVietChoPhanBien");
+        //    }
+
+        //    // Kiểm tra đã duyệt chưa
+        //    if (baiViet.TrangThai != 1)
+        //    {
+        //        TempData["Error"] = "Bài viết này đã được duyệt hoặc xử lý trước đó!";
+        //        return RedirectToAction("BaiVietChoPhanBien");
+        //    }
+
+        //    // Kiểm tra đã phân công chưa
+        //    bool daPhanCong = db.PhanCongs.Any(p => p.IDTapChiBaiViet == idBaiViet);
+        //    if (daPhanCong)
+        //    {
+        //        TempData["Error"] = "Bài viết đã được phân công cho người phản biện khác.";
+        //        return RedirectToAction("BaiVietChoPhanBien");
+        //    }
+
+        //    // Kiểm tra ngày kết thúc có hợp lệ không (phải lớn hơn hoặc bằng ngày hiện tại)
+        //    if (ngayKetThuc < DateTime.Today)
+        //    {
+        //        TempData["Error"] = "Ngày kết thúc phải từ hôm nay trở đi!";
+        //        return RedirectToAction("BaiVietChoPhanBien");
+        //    }
+
+        //    // Cập nhật trạng thái bài viết
+        //    baiViet.TrangThai = 2; // Đã phân công
+        //    baiViet.TrangThaiPhanBien = 0;
+        //    db.SaveChanges();
+
+        //    // Thêm bản ghi phân công
+        //    var phanCong = new PhanCong
+        //    {
+        //        IDTapChiBaiViet = baiViet.IDTapChiBaiViet,
+        //        IDNguoiPhanBien = idPhanBien, // Sử dụng idPhanBien từ form, không phải userId
+        //        NgayPhanCong = DateTime.Now,
+        //        NgayKetThuc = ngayKetThuc,
+        //        VongPhanBien=1,
+        //        TrangThaiPhanBien=0,
+
+        //    };
+        //    db.PhanCongs.Add(phanCong);
+        //    db.SaveChanges();
+        //    int soLuongPhanBien = db.PhanCongs.Count(p => p.IDTapChiBaiViet == idBaiViet);
+        //    int maxPB = 2; // Số lượng tối đa người phản biện (có thể thay đổi)
+
+        //    if (soLuongPhanBien >= maxPB)
+        //    {
+        //        baiViet.TrangThai = 2; // Đã phân công đủ người phản biện
+        //        db.SaveChanges();
+        //    }
+        //    TempData["Success"] = "Phân công phản biện thành công.";
+
+        //    // Lấy thông tin người phản biện
+        //    var nguoiPhanBien = db.NguoiDungs.FirstOrDefault(nd => nd.IDNguoiDung == idPhanBien);
+        //    var linhVuc = db.LinhVucs.FirstOrDefault(lv => lv.IDLinhVuc == baiViet.IDLinhVuc);
+
+        //    if (nguoiPhanBien == null || linhVuc == null)
+        //    {
+        //        TempData["Error"] = "Không tìm thấy thông tin người phản biện hoặc lĩnh vực.";
+        //        return RedirectToAction("BaiVietChoPhanBien");
+        //    }
+
+        //    // Đọc template email
+        //    string content = System.IO.File.ReadAllText(HttpContext.Server.MapPath("~/Content/templates/send_phanbien.html"));
+
+        //    // Thay thế các placeholder trong template
+        //    content = content.Replace("{{IDPhanCong}}", phanCong.IDPhanCong.ToString());
+        //    content = content.Replace("{{TieuDeBaiViet}}", baiViet.TieuDe);
+        //    content = content.Replace("{{TacGia}}", baiViet.TacGia);
+        //    content = content.Replace("{{TenLinhVuc}}", linhVuc.TenLinhVuc);
+        //    content = content.Replace("{{TenNguoiPhanBien}}", nguoiPhanBien.HoTen);
+        //    content = content.Replace("{{Email}}", nguoiPhanBien.Email);
+        //    content = content.Replace("{{NgayPhanCong}}", phanCong.NgayPhanCong.ToString("dd/MM/yyyy"));
+        //    content = content.Replace("{{VongPhanBien}}", phanCong.VongPhanBien.ToString());
+        //    //content = content.Replace("{{LinkPhanBien}}", $"{Request.Url.Scheme}://{Request.Url.Authority}/PhanBien/PhanBienBaiViet/{phanCong.IDPhanCong}");
+        //    var link = Url.Action("DangNhap", "TaiKhoan");
+        //    var fullLink = $"{Request.Url.Scheme}://{Request.Url.Authority}{link}";
+        //    content = content.Replace("{{LinkPhanBien}}", fullLink);
+
+
+        //    // Gửi email
+        //    bool emailSent = SendMail.sendMail(
+        //        name: "Biên tập viên QLTapChi",
+        //        subject: $"Phân công phản biện: #{phanCong.IDPhanCong}",
+        //        content: content,
+        //        toMail: nguoiPhanBien.Email
+        //    );
+
+        //    if (!emailSent)
+        //    {
+        //        TempData["Warning"] = "Phân công thành công, nhưng gửi email thất bại.";
+        //    }
+        //    return RedirectToAction("BaiVietChoPhanBien");
+        //}
         [HttpPost]
         public ActionResult PhanCongPhanBien(int idBaiViet, int idPhanBien, DateTime ngayKetThuc)
         {
@@ -162,47 +276,46 @@ namespace QLTapChi.Areas.Admin.Controllers
             }
 
             // Kiểm tra đã phân công chưa
-            bool daPhanCong = db.PhanCongs.Any(p => p.IDTapChiBaiViet == idBaiViet);
+            bool daPhanCong = db.PhanCongs.Any(p => p.IDTapChiBaiViet == idBaiViet && p.IDNguoiPhanBien == idPhanBien);
             if (daPhanCong)
             {
-                TempData["Error"] = "Bài viết đã được phân công cho người phản biện khác.";
+                TempData["Error"] = "Người phản biện này đã được phân công cho bài viết.";
                 return RedirectToAction("BaiVietChoPhanBien");
             }
 
-            // Kiểm tra ngày kết thúc có hợp lệ không (phải lớn hơn hoặc bằng ngày hiện tại)
+            // Kiểm tra ngày kết thúc có hợp lệ không
             if (ngayKetThuc < DateTime.Today)
             {
                 TempData["Error"] = "Ngày kết thúc phải từ hôm nay trở đi!";
                 return RedirectToAction("BaiVietChoPhanBien");
             }
 
-            // Cập nhật trạng thái bài viết
-            baiViet.TrangThai = 2; // Đã phân công
-            baiViet.TrangThaiPhanBien = 0;
-            db.SaveChanges();
-
             // Thêm bản ghi phân công
             var phanCong = new PhanCong
             {
                 IDTapChiBaiViet = baiViet.IDTapChiBaiViet,
-                IDNguoiPhanBien = idPhanBien, // Sử dụng idPhanBien từ form, không phải userId
+                IDNguoiPhanBien = idPhanBien,
                 NgayPhanCong = DateTime.Now,
                 NgayKetThuc = ngayKetThuc,
-                VongPhanBien=1,
-                TrangThaiPhanBien=0,
-                
+                VongPhanBien = 1,
+                TrangThaiPhanBien = 0,
             };
             db.PhanCongs.Add(phanCong);
             db.SaveChanges();
-            int soLuongPhanBien = db.PhanCongs.Count(p => p.IDTapChiBaiViet == idBaiViet);
-            int maxPB = 2; // Số lượng tối đa người phản biện (có thể thay đổi)
 
+            // Kiểm tra số lượng người phản biện
+            int soLuongPhanBien = db.PhanCongs.Count(p => p.IDTapChiBaiViet == idBaiViet);
+            int maxPB = 2; // Số lượng tối đa người phản biện
+
+            // Chỉ cập nhật trạng thái khi đã phân công đủ người
             if (soLuongPhanBien >= maxPB)
             {
                 baiViet.TrangThai = 2; // Đã phân công đủ người phản biện
+                baiViet.TrangThaiPhanBien = 0; // Chờ phản biện
                 db.SaveChanges();
             }
-            TempData["Success"] = "Phân công phản biện thành công.";
+
+            TempData["Success"] = $"Phân công phản biện thành công. Đã phân công {soLuongPhanBien}/{maxPB} người phản biện.";
 
             // Lấy thông tin người phản biện
             var nguoiPhanBien = db.NguoiDungs.FirstOrDefault(nd => nd.IDNguoiDung == idPhanBien);
@@ -215,7 +328,17 @@ namespace QLTapChi.Areas.Admin.Controllers
             }
 
             // Đọc template email
-            string content = System.IO.File.ReadAllText(HttpContext.Server.MapPath("~/Content/templates/send_phanbien.html"));
+            string filePath = HttpContext.Server.MapPath("~/Content/send_phanbien.html");
+            string content;
+            if (System.IO.File.Exists(filePath))
+            {
+                content = System.IO.File.ReadAllText(filePath);
+            }
+            else
+            {
+                TempData["Error"] = "Không tìm thấy file template email.";
+                return RedirectToAction("BaiVietChoPhanBien");
+            }
 
             // Thay thế các placeholder trong template
             content = content.Replace("{{IDPhanCong}}", phanCong.IDPhanCong.ToString());
@@ -226,11 +349,9 @@ namespace QLTapChi.Areas.Admin.Controllers
             content = content.Replace("{{Email}}", nguoiPhanBien.Email);
             content = content.Replace("{{NgayPhanCong}}", phanCong.NgayPhanCong.ToString("dd/MM/yyyy"));
             content = content.Replace("{{VongPhanBien}}", phanCong.VongPhanBien.ToString());
-            //content = content.Replace("{{LinkPhanBien}}", $"{Request.Url.Scheme}://{Request.Url.Authority}/PhanBien/PhanBienBaiViet/{phanCong.IDPhanCong}");
-            var link = Url.Action("DangNhap", "TaiKhoan");
+            var link = Url.Action("DangNhap", "TaiKhoan", new { area = "" });
             var fullLink = $"{Request.Url.Scheme}://{Request.Url.Authority}{link}";
             content = content.Replace("{{LinkPhanBien}}", fullLink);
-
 
             // Gửi email
             bool emailSent = SendMail.sendMail(
@@ -244,6 +365,7 @@ namespace QLTapChi.Areas.Admin.Controllers
             {
                 TempData["Warning"] = "Phân công thành công, nhưng gửi email thất bại.";
             }
+
             return RedirectToAction("BaiVietChoPhanBien");
         }
         public ActionResult TuChoiPhanBien(int id)

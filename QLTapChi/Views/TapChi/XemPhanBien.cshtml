@@ -81,14 +81,13 @@
 
             <!-- Phần nhận xét hiển thị bên dưới bảng -->
             <div class="review-comment mt-3">
-                <h4>Nhận xét</h4>
+                
                 @using (Html.BeginForm("CapNhatNhanXet", "PhanBien", FormMethod.Post))
                 {
                     @Html.AntiForgeryToken()
                     @Html.Hidden("IDTapChiBaiViet", Model.BaiViet.IDTapChiBaiViet)
                     @Html.Hidden("IDNguoiPhanBien", pb.IDNguoiPhanBien)
-                    <textarea class="form-control ckeditor-nhanxet" name="NhanXet" rows="4">@(phanBien != null ? phanBien.NhanXet : "")</textarea>
-                    <button type="submit" class="btn btn-primary mt-2">Lưu nhận xét</button>
+                    
                 }
             </div>
         </div>

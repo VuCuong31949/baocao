@@ -1,0 +1,60 @@
+﻿
+@{
+    ViewBag.Title = "Danh Sách Bài Viết Đã Phản Biện - Chờ Xuất Bản";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Danh Sách Bài Viết Đã Phản Biện - Chờ Xuất Bản</h2>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Tiêu Đề</th>
+            <th>Tác Giả</th>
+            <th>Lĩnh Vực</th>
+            <th>Vòng Phản Biện</th>
+            <th>Trạng Thái</th>
+            <th>Kết Quả Phản Biện</th>
+            <th>Ngày Phản Biện Mới Nhất</th>
+            <th>Hành Động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.TieuDe</td>
+                <td>@item.TacGia</td>
+                <td>@item.TenLinhVuc</td>
+                <td>@item.VongPhanBien</td>
+                <td>@item.TrangThaiPhanBienText</td>
+                <td>@item.KetQuaPhanBien</td>
+                <td>@(item.NgayPhanBienMoiNhat?.ToString("dd/MM/yyyy") ?? "Chưa có")</td>
+                <td>
+                    @if (item.TrangThaiPhanBien == 2) // Chỉ hiển thị nút xuất bản nếu trạng thái là "Đạt, chờ xuất bản"
+                    {
+                        <a href="@Url.Action("XuatBan", "PhanBien", new { id = item.IDTapChiBaiViet, area = "Admin" })" class="btn btn-success btn-sm">Xuất Bản</a>
+                    }
+                    else
+                    {
+                        <span class="text-muted">Không thể xuất bản</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

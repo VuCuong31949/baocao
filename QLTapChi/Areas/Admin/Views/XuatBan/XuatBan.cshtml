@@ -1,0 +1,29 @@
+﻿
+@{
+    ViewBag.Title = "Xuất Bản Bài Viết";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Xuất Bản Bài Viết</h2>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
+
+@using (Html.BeginForm("XuatBan", "PhanBien", new { area = "Admin" }, FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <input type="hidden" name="IDTapChiBaiViet" value="@ViewBag.IDTapChiBaiViet" />
+
+    <div class="form-group">
+        <label>Chọn Số Tạp Chí</label>
+        @Html.DropDownList("IDSoTapChi", (IEnumerable<SelectListItem>)ViewBag.DanhSachSoTapChi, "Chọn số tạp chí", new { @class = "form-control", required = "required" })
+    </div>
+
+    <button type="submit" class="btn btn-primary">Xuất Bản</button>
+    <a href="@Url.Action("DanhSachDaPhanBien", "PhanBien", new { area = "Admin" })" class="btn btn-secondary">Hủy</a>
+}

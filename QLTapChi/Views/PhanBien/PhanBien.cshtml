@@ -58,7 +58,7 @@
         <div class="row">
             @foreach (var item in Model)
             {
-                if (item.TrangThaiPhanBien == 0) // Chỉ hiển thị bài cần phản biện
+                if (item.TrangThaiPhanBien == 0|| item.TrangThaiPhanBien !=0) // Chỉ hiển thị bài cần phản biện
                 {
                     <div class="col-lg-12 mb-3">
                         <div class="journal-card p-3 shadow rounded border bg-white">

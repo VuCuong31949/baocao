@@ -5,41 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@*<div class="container">
-    
 
-    <h2>Danh sách bài chờ duyệt</h2>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Tiêu đề</th>
-                <th>Tác giả</th>
-                <th>Ngày gửi</th>
-                <th>Trạng thái</th>
-                <th>Thao tác</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>@item.TieuDe</td>
-                    <td>@item.TacGia</td>
-                    <td>@item.NgayGui.ToString("dd/MM/yyyy")</td>
-                    <td>
-                        @(item.TrangThai == 0 ? "Chờ duyệt" : (item.TrangThai == 1 ? "Đã duyệt" : "Khác"))
-                    </td>
-                    <td>
-                        @Html.ActionLink("Xem", "XemBai", new { id = item.IDTapChiBaiViet }) |
-                        @Html.ActionLink("Duyệt", "DuyetBai", new { id = item.IDTapChiBaiViet }) |
-                        @Html.ActionLink("Từ chối", "TuChoiBai", new { id = item.IDTapChiBaiViet })
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-
-</div>*@
 <div class="container container-main">
     <h2 class="mb-4">Danh sách bài viết của bạn</h2>
 
@@ -100,10 +66,10 @@
                                 <span class="badge bg-info">Đang phản biện</span>
                                 break;
                             case 2:
-                                <span class="badge bg-success">đạt</span>
+                                <span class="badge bg-success">Đạt (chờ xuất bản)</span>
                                 break;
                             case 3:
-                                <span class="badge bg-primary">không đạt</span>
+                                <span class="badge bg-warning">Chờ chỉnh sửa</span> 
                                 break;
                             case 4:
                                 <span class="badge bg-danger">Từ chối</span>
@@ -114,13 +80,34 @@
                         }
                     </td>
                     <td>
+                        @*<a href="@Url.Action("DownloadFile", "TapChi", new { id = item.IDTapChiBaiViet })" class="btn btn-sm btn-primary">Tải bài</a>
+            @if (item.TrangThaiPhanBien == 1 || item.TrangThaiPhanBien == 2 || item.TrangThaiPhanBien == 3 || item.TrangThaiPhanBien == 4)
+            {
+                <a href="@Url.Action("XemPhanBien", "TapChi", new { id = item.IDTapChiBaiViet })" class="btn btn-sm btn-info">Xem phản biện</a>
+            }
+            <a href="@Url.Action("CapNhatTapChi", "TapChi", new { id = item.IDTapChiBaiViet })" class="btn btn-sm btn-warning">Sửa</a>
+            <a href="@Url.Action("XoaBaiBao", "TapChi", new { id = item.IDTapChiBaiViet })" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc muốn xóa bài viết này?')">Xóa</a>
+        </td>*@
                         <a href="@Url.Action("DownloadFile", "TapChi", new { id = item.IDTapChiBaiViet })" class="btn btn-sm btn-primary">Tải bài</a>
                         @if (item.TrangThaiPhanBien == 1 || item.TrangThaiPhanBien == 2 || item.TrangThaiPhanBien == 3 || item.TrangThaiPhanBien == 4)
                         {
                             <a href="@Url.Action("XemPhanBien", "TapChi", new { id = item.IDTapChiBaiViet })" class="btn btn-sm btn-info">Xem phản biện</a>
                         }
-                        <a href="@Url.Action("CapNhatTapChi", "TapChi", new { id = item.IDTapChiBaiViet })" class="btn btn-sm btn-warning">Sửa</a>
+                        @if (item.TrangThaiPhanBien == 3)
+                        {
+                            <a href="@Url.Action("ChinhSuaSauPhanBien", "TapChi", new { id = item.IDTapChiBaiViet })" class="btn btn-sm btn-warning">Chỉnh sửa sau phản biện</a>
+                            <a href="@Url.Action("GuiLaiPhanBien", "TapChi", new { id = item.IDTapChiBaiViet })" class="btn btn-sm btn-success">Gửi lại để phản biện</a>
+                        }
+                        else if (item.TrangThai == 0)
+                        {
+                            <a href="@Url.Action("CapNhatTapChi", "TapChi", new { id = item.IDTapChiBaiViet })" class="btn btn-sm btn-warning">Sửa</a>
+                        }
+                       
                         <a href="@Url.Action("XoaBaiBao", "TapChi", new { id = item.IDTapChiBaiViet })" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc muốn xóa bài viết này?')">Xóa</a>
+
+
+
+
                     </td>
                 </tr>
             }
