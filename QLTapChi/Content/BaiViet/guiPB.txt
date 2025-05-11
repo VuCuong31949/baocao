@@ -1,0 +1,157 @@
+[HttpPost]
+public ActionResult GuiPhanBien(int IDTapChiBaiViet, string NhanXet, int TrangThaiPhanBien, HttpPostedFileBase fileUpload)
+{
+    if (Session["idUser"] == null)
+    {
+        TempData["Error"] = "Bạn chưa đăng nhập hoặc không có quyền truy cập.";
+        return RedirectToAction("DangNhap", "TaiKhoan");
+    }
+
+    int idPB = (int)Session["idUser"];
+    var phanCong = db.PhanCongs.FirstOrDefault(p => p.IDTapChiBaiViet == IDTapChiBaiViet && p.IDNguoiPhanBien == idPB);
+    if (phanCong == null)
+    {
+        TempData["Error"] = "Không tìm thấy phân công.";
+        return RedirectToAction("PhanBien");
+    }
+
+    if (phanCong.TrangThaiPhanBien != 5)
+    {
+        TempData["Error"] = "Bạn chưa chấp nhận phân công phản biện.";
+        return RedirectToAction("PhanBien");
+    }
+
+    phanCong.TrangThaiPhanBien = TrangThaiPhanBien;
+    phanCong.NgayPhanCong = DateTime.Now;
+
+    var phanBien = new PhanBien
+    {
+        NhanXet = NhanXet,
+        NgayPhanBien = DateTime.Now,
+        IDTapChiBaiViet = IDTapChiBaiViet,
+        IDNguoiPhanBien = idPB
+    };
+
+    if (fileUpload != null && fileUpload.ContentLength > 0)
+    {
+        string rootFolder = Server.MapPath("/Content/PhanBien/");
+        string pathFile = rootFolder + fileUpload.FileName;
+        fileUpload.SaveAs(pathFile);
+        phanBien.filePB = "Content/PhanBien/" + fileUpload.FileName;
+    }
+
+    db.PhanBiens.Add(phanBien);
+
+    var baiViet = db.TapChiBaiViets.FirstOrDefault(b => b.IDTapChiBaiViet == IDTapChiBaiViet);
+    if (baiViet != null)
+    {
+        var phanCongs = db.PhanCongs
+            .Where(p => p.IDTapChiBaiViet == IDTapChiBaiViet && p.VongPhanBien == phanCong.VongPhanBien)
+            .ToList();
+
+        if (phanCongs.All(p => p.TrangThaiPhanBien != 0))
+        {
+            var trangThaiPhanBiens = phanCongs.Select(p => p.TrangThaiPhanBien).ToList();
+            int vongPhanBienHienTai = phanCong.VongPhanBien ?? 0;
+            const int SO_VONG_PHAN_BIEN_TOI_DA = 3;
+
+            if (trangThaiPhanBiens.All(t => t == 1))
+            {
+                baiViet.TrangThaiPhanBien = 2;
+                baiViet.TrangThai = 4;
+            }
+            else if (trangThaiPhanBiens.Any(t => t == 4))
+            {
+                int newVongPhanBien = vongPhanBienHienTai + 1;
+                if (newVongPhanBien <= SO_VONG_PHAN_BIEN_TOI_DA)
+                {
+                    foreach (var pc in phanCongs)
+                    {
+                        db.PhanCongs.Add(new PhanCong
+                        {
+                            IDTapChiBaiViet = IDTapChiBaiViet,
+                            IDNguoiPhanBien = pc.IDNguoiPhanBien,
+                            NgayPhanCong = DateTime.Now,
+                            VongPhanBien = newVongPhanBien,
+                            TrangThaiPhanBien = 0
+                        });
+                    }
+                    baiViet.TrangThaiPhanBien = 1;
+                    baiViet.TrangThai = 2;
+                }
+                else
+                {
+                    baiViet.TrangThaiPhanBien = 4;
+                    baiViet.TrangThai = 4;
+                }
+            }
+            else if (trangThaiPhanBiens.Any(t => t == 2))
+            {
+                if (vongPhanBienHienTai >= SO_VONG_PHAN_BIEN_TOI_DA)
+                {
+                    baiViet.TrangThaiPhanBien = 4;
+                    baiViet.TrangThai = 4;
+                }
+                else
+                {
+                    baiViet.TrangThaiPhanBien = 3; // Chờ chỉnh sửa
+                    // [Thêm]: Gửi email thông báo cho tác giả
+                    var tacGia = db.NguoiDungs.FirstOrDefault(t => t.IDNguoiDung == baiViet.IDNguoiGui);
+                    if (tacGia != null)
+                    {
+                        string filePath = HttpContext.Server.MapPath("~/Content/send_phanbien.html");
+                        string content = System.IO.File.Exists(filePath) ? System.IO.File.ReadAllText(filePath) : "Thông báo: Bài viết của bạn cần chỉnh sửa.";
+
+                        content = content.Replace("{{TieuDeBaiViet}}", baiViet.TieuDe);
+                        content = content.Replace("{{TacGia}}", baiViet.TacGia);
+
+                        SendMail.sendMail(
+                            name: "Hệ thống QLTapChi",
+                            subject: $"Bài viết #{baiViet.IDTapChiBaiViet} cần chỉnh sửa",
+                            content: content,
+                            toMail: tacGia.Email
+                        );
+                    }
+                }
+            }
+            else if (trangThaiPhanBiens.Any(t => t == 3))
+            {
+                if (vongPhanBienHienTai >= SO_VONG_PHAN_BIEN_TOI_DA)
+                {
+                    baiViet.TrangThaiPhanBien = 4;
+                    baiViet.TrangThai = 4;
+                }
+                else
+                {
+                    baiViet.TrangThaiPhanBien = 3; // Chờ chỉnh sửa
+                    // [Thêm]: Gửi email thông báo cho tác giả
+                    var tacGia = db.NguoiDungs.FirstOrDefault(t => t.IDNguoiDung == baiViet.IDNguoiGui);
+                    if (tacGia != null)
+                    {
+                        string filePath = HttpContext.Server.MapPath("~/Content/send_phanbien.html");
+                        string content = System.IO.File.Exists(filePath) ? System.IO.File.ReadAllText(filePath) : "Thông báo: Bài viết của bạn cần chỉnh sửa.";
+
+                        content = content.Replace("{{TieuDeBaiViet}}", baiViet.TieuDe);
+                        content = content.Replace("{{TacGia}}", baiViet.TacGia);
+
+                        SendMail.sendMail(
+                            name: "Hệ thống QLTapChi",
+                            subject: $"Bài viết #{baiViet.IDTapChiBaiViet} cần chỉnh sửa",
+                            content: content,
+                            toMail: tacGia.Email
+                        );
+                    }
+                }
+            }
+        }
+        else
+        {
+            baiViet.TrangThaiPhanBien = 1;
+        }
+    }
+
+    db.SaveChanges();
+
+    TempData["Success"] = "Gửi phản biện thành công.";
+    return RedirectToAction("PhanBien");
+}

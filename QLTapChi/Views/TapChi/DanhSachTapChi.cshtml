@@ -96,7 +96,7 @@
                         @if (item.TrangThaiPhanBien == 3)
                         {
                             <a href="@Url.Action("ChinhSuaSauPhanBien", "TapChi", new { id = item.IDTapChiBaiViet })" class="btn btn-sm btn-warning">Chỉnh sửa sau phản biện</a>
-                            <a href="@Url.Action("GuiLaiPhanBien", "TapChi", new { id = item.IDTapChiBaiViet })" class="btn btn-sm btn-success">Gửi lại để phản biện</a>
+                            @*<a href="@Url.Action("GuiLaiPhanBien", "TapChi", new { id = item.IDTapChiBaiViet })" class="btn btn-sm btn-success">Gửi lại để phản biện</a>*@
                         }
                         else if (item.TrangThai == 0)
                         {

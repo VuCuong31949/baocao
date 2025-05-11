@@ -13,7 +13,7 @@ namespace QLTapChi.Models
 
             HttpCookie cookie = new HttpCookie(name);
             cookie.Value = HttpUtility.UrlEncode(value);
-            cookie.Value = value;
+            //cookie.Value = value;
             cookie.Expires = expires;
             HttpContext.Current.Response.Cookies.Add(cookie);
         }

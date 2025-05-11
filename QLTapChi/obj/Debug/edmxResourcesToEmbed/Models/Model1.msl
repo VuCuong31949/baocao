@@ -61,12 +61,12 @@
     <EntitySetMapping Name="PhanBiens">
       <EntityTypeMapping TypeName="QLTapChiModel.PhanBien">
         <MappingFragment StoreEntitySet="PhanBien">
-          <ScalarProperty Name="filePB" ColumnName="filePB" />
           <ScalarProperty Name="IDPhanBien" ColumnName="IDPhanBien" />
           <ScalarProperty Name="NhanXet" ColumnName="NhanXet" />
           <ScalarProperty Name="NgayPhanBien" ColumnName="NgayPhanBien" />
           <ScalarProperty Name="IDTapChiBaiViet" ColumnName="IDTapChiBaiViet" />
           <ScalarProperty Name="IDNguoiPhanBien" ColumnName="IDNguoiPhanBien" />
+          <ScalarProperty Name="filePB" ColumnName="filePB" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -127,11 +127,11 @@
           <ScalarProperty Name="IDLinhVuc" ColumnName="IDLinhVuc" />
           <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
           <ScalarProperty Name="NgayGui" ColumnName="NgayGui" />
-          <ScalarProperty Name="GhiChu" ColumnName="GhiChu" />
           <ScalarProperty Name="TuKhoa" ColumnName="TuKhoa" />
           <ScalarProperty Name="IDNguoiGui" ColumnName="IDNguoiGui" />
           <ScalarProperty Name="DongTacGia" ColumnName="DongTacGia" />
           <ScalarProperty Name="TrangThaiPhanBien" ColumnName="TrangThaiPhanBien" />
+          <ScalarProperty Name="TomTat" ColumnName="TomTat" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

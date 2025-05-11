@@ -10,15 +10,15 @@
         <!-- Thông tin tạp chí -->
         <div class="col-lg-12">
             <div class="rb-journal-card">
-                <h2>Tạp chí: Model.TIeuDe</h2>
+                <h2>Tạp chí: @Model.TieuDe</h2>
                 <p><strong>Tác giả:</strong> @Model.TacGia</p>
-                <p><strong>Tóm tắt:</strong> @Model.NoiDung</p>
+                <p><strong>Tóm tắt:</strong> @Model.TomTat</p>
                 <p><strong>Ngày gửi:</strong> @Model.NgayGui</p>
                 <p><strong>Đồng tác giả:</strong> @Model.DongTacGia</p>
                 <p><strong>Từ khóa:</strong> @Model.TuKhoa</p>
                 <div class="mb-3">
-                    <label for="GhiChu" class="form-label">Ghi chú</label>
-                    <textarea class="form-control" id="txtGhiChu" name="GhiChu" rows="6">@Model.GhiChu</textarea>
+                    <label for="GhiChu" class="form-label">Tóm tắt</label>
+                    <textarea class="form-control" id="txtGhiChu" name="GhiChu" rows="6">@Model.TomTat</textarea>
                 </div>
                 <a href="@Url.Action("DownloadFile", "PhanBien", new { id = Model.IDTapChiBaiViet })" class="btn btn-primary">Tải xuống bài viết</a>
             </div>

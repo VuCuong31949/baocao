@@ -1,0 +1,84 @@
+﻿@model List<QLTapChi.Models.SoTapChi>
+
+@{
+    ViewBag.Title = "Các Số Tạp Chí - Tạp chí Khoa học Đại học Nam Cần Thơ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .articles-section {
+        margin-top: 20px;
+    }
+
+        .articles-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+    .issue-card {
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        padding: 15px;
+        transition: transform 0.2s;
+    }
+
+        .issue-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+    .issue-title {
+        font-size: 1.25rem;
+        font-weight: bold;
+    }
+
+        .issue-title a {
+            color: #333;
+            text-decoration: none;
+        }
+
+            .issue-title a:hover {
+                color: #007bff;
+                text-decoration: underline;
+            }
+
+    .issue-date {
+        font-size: 0.9rem;
+        color: #555;
+        margin-top: 5px;
+    }
+
+    .no-issues {
+        font-size: 1rem;
+        color: #555;
+        text-align: center;
+        margin-top: 20px;
+    }
+</style>
+
+<div class="container articles-section">
+    <h3>Các Số Tạp Chí</h3>
+
+    @if (Model.Any())
+    {
+        foreach (var soTapChi in Model)
+        {
+            <div class="issue-card">
+                <div class="issue-title">
+                    <a href="@Url.Action("IssueDetails", "SoTapChi", new { id = soTapChi.IDSoTapChi })">
+                        Số @soTapChi.TenSo
+                    </a>
+                </div>
+                <div class="issue-date">
+                    Ngày phát hành: @soTapChi.NgayPhatHanh.ToString("dd/MM/yyyy")
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p class="no-issues">Chưa có số tạp chí nào được xuất bản.</p>
+    }
+</div>

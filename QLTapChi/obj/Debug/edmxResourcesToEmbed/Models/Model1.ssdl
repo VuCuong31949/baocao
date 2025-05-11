@@ -118,11 +118,11 @@
     <Property Name="IDLinhVuc" Type="int" Nullable="false" />
     <Property Name="TrangThai" Type="int" />
     <Property Name="NgayGui" Type="date" Nullable="false" />
-    <Property Name="GhiChu" Type="nvarchar" MaxLength="500" />
     <Property Name="TuKhoa" Type="nvarchar" MaxLength="300" />
     <Property Name="IDNguoiGui" Type="int" />
     <Property Name="DongTacGia" Type="nvarchar" MaxLength="500" />
     <Property Name="TrangThaiPhanBien" Type="int" />
+    <Property Name="TomTat" Type="nvarchar(max)" />
   </EntityType>
   <EntityType Name="XuatBan">
     <Key>

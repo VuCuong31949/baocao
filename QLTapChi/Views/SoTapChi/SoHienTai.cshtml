@@ -1,0 +1,158 @@
+﻿@model List<QLTapChi.Models.TapChiBaiViet>
+
+@{
+    ViewBag.Title = "Số Hiện Tại - Tạp chí Khoa học Đại học Nam Cần Thơ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .articles-section {
+        margin-top: 20px;
+    }
+
+        .articles-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .articles-section h4 {
+            font-size: 1.2rem;
+            color: #555;
+        }
+
+    .card {
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        padding: 20px;
+        transition: transform 0.2s;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+    .card-title {
+        font-size: 1.25rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+        .card-title a {
+            color: #333;
+            text-decoration: none;
+        }
+
+            .card-title a:hover {
+                color: #007bff;
+                text-decoration: underline;
+            }
+
+    .card-authors {
+        font-size: 0.9rem;
+        color: #555;
+        margin-bottom: 10px;
+    }
+
+    .card-actions {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .tomTatButton {
+        color: #007bff;
+        text-decoration: none;
+        margin-right: 15px;
+        font-size: 0.9rem;
+        cursor: pointer;
+    }
+
+        .tomTatButton:hover {
+            text-decoration: underline;
+        }
+
+    .pdf-link {
+        display: flex;
+        align-items: center;
+        color: #d93c08;
+        text-decoration: none;
+        font-size: 0.9rem;
+    }
+
+        .pdf-link:hover {
+            text-decoration: underline;
+        }
+
+    .pdf-icon {
+        width: 20px;
+        height: 20px;
+        margin-right: 5px;
+    }
+
+    .tomTatContent {
+        display: none;
+        font-size: 0.85rem;
+        color: #333;
+        margin-top: 10px;
+        line-height: 1.5;
+    }
+
+    .no-articles {
+        font-size: 1rem;
+        color: #555;
+        text-align: center;
+        margin-top: 20px;
+    }
+</style>
+
+<div class="container articles-section">
+    <h3>Số Hiện Tại</h3>
+    <h4>@ViewBag.SoTapChiHienTai</h4>
+
+    @if (Model.Any())
+    {
+        foreach (var baiViet in Model)
+        {
+            <div class="card">
+                <h5 class="card-title">
+                    <a href="@Url.Action("Details", "Home", new { id = baiViet.IDTapChiBaiViet })">@baiViet.TieuDe</a>
+                </h5>
+                <p class="card-authors">@baiViet.DongTacGia</p>
+                <div class="card-actions">
+                    <a href="#" class="tomTatButton">Tóm tắt</a>
+                    <a href="@baiViet.NoiDung" class="pdf-link" target="_blank">
+                        <svg class="pdf-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+                            <path fill="#d93c08" d="M0 64C0 28.7 28.7 0 64 0L224 0l0 128c0 17.7 14.3 32 32 32l128 0 0 288c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64zm384 64l-128 0L256 0 384 128z" />
+                        </svg>
+                        PDF
+                    </a>
+                </div>
+                <div class="tomTatContent">
+                    @baiViet.TomTat
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p class="no-articles">Chưa có bài viết nào trong số hiện tại.</p>
+    }
+</div>
+
+@section scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tomTatButtons = document.querySelectorAll('.tomTatButton');
+            tomTatButtons.forEach(button => {
+                button.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const tomTatContent = this.closest('.card').querySelector('.tomTatContent');
+                    tomTatContent.style.display = tomTatContent.style.display === 'none' ? 'block' : 'none';
+                });
+            });
+        });
+    </script>
+}

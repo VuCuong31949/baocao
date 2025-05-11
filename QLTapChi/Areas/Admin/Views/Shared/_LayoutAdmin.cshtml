@@ -272,7 +272,7 @@
                                 <a href="" class="nav-link">
                                     <i class="nav-icon fas fa-tachometer-alt"></i>
                                     <p>
-                                        Phân Công Biên Tập Viên
+                                        Phân Công BTV
                                         <i class="right fas fa-angle-left"></i>
                                     </p>
                                 </a>
@@ -283,18 +283,7 @@
                                             <p>Duyệt Bài Viết</p>
                                         </a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a href="~/Content/clients/index2.html" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Dashboard v2</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="~/Content/clients/index3.html" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Dashboard v3</p>
-                                        </a>
-                                    </li>
+
                                 </ul>
                             </li>
 
@@ -345,14 +334,38 @@
                                         <p>danh sách đã phản biện</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="~/Content/clients/index3.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Dashboard v3</p>
-                                    </a>
-                                </li>
+
                             </ul>
                         </li>
+                        @if (Session["LoaiBienTapVien"] != null && Session["LoaiBienTapVien"].ToString() == "TongBienTap")
+                        {
+                            <li class="nav-item">
+                                <a href="" class="nav-link">
+                                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                                    <p>
+                                        Số Tạp Chí
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="/Admin/SoTapChi/DanhSach" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Danh Sách</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="/Admin/SoTapChi/Them" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Thêm</p>
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </li>
+
+
+                        }
 
                         <li class="nav-item">
                             <a href="" class="nav-link">
@@ -375,12 +388,31 @@
                                         <p>Xuất bản</p>
                                     </a>
                                 </li>
+                               
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="" class="nav-link">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>
+                                    Lĩnh Vực
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="~/Content/clients/index3.html" class="nav-link">
+                                    <a href="/Admin/LinhVuc/DanhSachLinhVuc" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Dashboard v3</p>
+                                        <p>Danh sách Lĩnh Vực</p>
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="/Admin/LinhVuc/createLV" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Thêm lĩnh vực</p>
+                                    </a>
+                                </li>
+                               
                             </ul>
                         </li>
                     </ul>

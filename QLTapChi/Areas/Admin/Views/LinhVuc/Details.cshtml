@@ -1,0 +1,27 @@
+﻿@model QLTapChi.Models.LinhVuc
+
+@{
+    ViewBag.Title = "Chi Tiết Lĩnh Vực";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="p-3">
+    <h2 class="p-2 text-bg-light w-75">Chi Tiết Lĩnh Vực</h2>
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-md-2">Tên Lĩnh Vực</label>
+            <div class="col-md-10">
+                <p class="form-control-static">@Html.DisplayFor(model => model.TenLinhVuc)</p>
+            </div>
+        </div>
+
+        <div class="form-group mt-3">
+            <div class="col-md-offset-2 col-md-10">
+                <a href="@Url.Action("DanhSachLinhVuc")" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left me-1"></i> Quay Lại
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -81,12 +81,12 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.GhiChu, htmlAttributes: new { @class = "control-label col-md-2" })
+            <label class="control-label col-md-2">Tóm tắt</label>
             <div class="col-md-10">
                 <div class="col-md-10">
-                    @Html.TextAreaFor(x => x.GhiChu, new { @class = "form-control", @id = "txtDetail" })
+                    @Html.TextAreaFor(x => x.TomTat, new { @class = "form-control", @id = "txtDetail" })
                 </div>
-                @Html.ValidationMessageFor(model => model.GhiChu, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.TomTat, "", new { @class = "text-danger" })
             </div>
         </div>
 

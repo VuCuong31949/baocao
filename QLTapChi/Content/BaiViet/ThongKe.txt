@@ -1,0 +1,161 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
+
+namespace QuanLyTiecCuoiVaDoCuoi.Thống_Kê_Control
+{
+    public partial class UC_TkDoanhThu : UserControl
+    {
+        function fn = new function();
+        String query;
+        public UC_TkDoanhThu()
+        {
+            InitializeComponent();
+            query = " Select * from TiecCuoi ";
+            DataSet ds = fn.getData(query);
+            DataGridViewTK.DataSource = ds.Tables[0];
+            DataGridViewTK.Font = new Font("Segoe UI", 10, FontStyle.Regular);
+        }
+
+        private void btnThongke_Click(object sender, EventArgs e)
+        {
+            if (!dtpTuNgay.Checked || !dtpDenNgay.Checked)
+            {
+                MessageBox.Show("Vui lòng chọn ngày thống kê!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string TuNgay = dtpTuNgay.Value.ToString("yyyy-MM-dd");
+            string DenNgay = dtpDenNgay.Value.ToString("yyyy-MM-dd");
+
+            string doanhThuQuery = $@"
+                SELECT SUM(DonGiaTiec) AS TongDoanhThu
+                FROM TiecCuoi
+                WHERE NgayDat BETWEEN '{TuNgay}' AND '{DenNgay}'";
+
+            string giaGocQuery = $@"
+                SELECT 
+                    SUM(ISNULL(sc.TongChiPhi, 0) + ISNULL(ma.GiaGoc, 0) + ISNULL(tb.Gia, 0) + ISNULL(dv.Gia, 0) + ISNULL(thc.Gia, 0)) AS TongGiaGoc
+                FROM TiecCuoi tc
+                JOIN SanhCuoi sc ON tc.TenSanh = sc.TenSC 
+                JOIN ThietBi tb ON tc.GoiThietBi = tb.TenTB
+                JOIN MonAn ma ON tc.GoiThucDon = ma.TenMA
+                JOIN DichVu dv ON tc.GoiDichVu = dv.TenDV
+                JOIN ThiepCuoi thc ON tc.LoaiThiepCuoi = thc.TenThiepCuoi
+                WHERE tc.NgayDat BETWEEN '{TuNgay}' AND '{DenNgay}'";
+
+            DataSet dsDoanhThu = fn.getData(doanhThuQuery);
+            DataSet dsGiaGoc = fn.getData(giaGocQuery);
+
+            decimal tongDoanhThu = 0;
+            decimal tongGiaGoc = 0;
+
+            if (dsDoanhThu.Tables[0].Rows.Count > 0 && dsDoanhThu.Tables[0].Rows[0][0] != DBNull.Value)
+                tongDoanhThu = Convert.ToDecimal(dsDoanhThu.Tables[0].Rows[0]["TongDoanhThu"]);
+
+            if (dsGiaGoc.Tables[0].Rows.Count > 0 && dsGiaGoc.Tables[0].Rows[0][0] != DBNull.Value)
+                tongGiaGoc = Convert.ToDecimal(dsGiaGoc.Tables[0].Rows[0]["TongGiaGoc"]);
+
+            decimal loiNhuan = tongDoanhThu - tongGiaGoc;
+
+            lblTongDoanhThu.Text = $"Tổng Doanh Thu: {tongDoanhThu:N0} VNĐ";
+            
+            lblLoiNhuan.Text = $"Lợi Nhuận: {loiNhuan:N0} VNĐ";
+
+
+            // Vẽ biểu đồ
+            chartThongKe.Series.Clear();
+            chartThongKe.Titles.Clear();
+            chartThongKe.Titles.Add("Thống kê doanh thu");
+
+            Series series = new Series("Giá Tiền");
+            series.ChartType = SeriesChartType.Column;
+            series.Points.AddXY("Tổng doanh thu", tongDoanhThu);
+            series.Points.AddXY("Tổng chi phí", tongGiaGoc);
+            series.Points.AddXY("Lợi nhuận", loiNhuan);
+            series.IsValueShownAsLabel = true;
+
+            chartThongKe.Series.Add(series);
+        }
+
+        private void chartThongKe_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void dtpTuNgay_ValueChanged(object sender, EventArgs e)
+        {
+            if (dtpTuNgay.Checked && dtpDenNgay.Checked)
+            {
+                string tuNgay = dtpTuNgay.Value.ToString("yyyy-MM-dd");
+                string denNgay = dtpDenNgay.Value.ToString("yyyy-MM-dd");
+
+                string query = $@"
+                    SELECT *
+                    FROM TiecCuoi
+                    WHERE NgayDat BETWEEN '{tuNgay}' AND '{denNgay}'";
+
+                DataSet ds = fn.getData(query);
+                if (ds.Tables.Count > 0)
+                {
+                    DataGridViewTK.DataSource = ds.Tables[0];
+                    DataGridViewTK.Refresh();
+                }
+            }
+            else
+            {
+                string query = @"
+                    SELECT *
+                    FROM TiecCuoi";
+
+                DataSet ds = fn.getData(query);
+                if (ds.Tables.Count > 0)
+                {
+                    DataGridViewTK.DataSource = ds.Tables[0];
+                    DataGridViewTK.Refresh();
+                }
+            }
+        }
+
+        private void dtpDenNgay_ValueChanged(object sender, EventArgs e)
+        {
+            if (dtpTuNgay.Checked && dtpDenNgay.Checked)
+            {
+                string tuNgay = dtpTuNgay.Value.ToString("yyyy-MM-dd");
+                string denNgay = dtpDenNgay.Value.ToString("yyyy-MM-dd");
+
+                string query = $@"
+                    SELECT *
+                    FROM TiecCuoi
+                    WHERE NgayDat BETWEEN '{tuNgay}' AND '{denNgay}'";
+
+                DataSet ds = fn.getData(query);
+                if (ds.Tables.Count > 0)
+                {
+                    DataGridViewTK.DataSource = ds.Tables[0];
+                    DataGridViewTK.Refresh();
+                }
+            }
+            else
+            {
+                string query = @"
+                    SELECT *
+                    FROM TiecCuoi";
+
+                DataSet ds = fn.getData(query);
+                if (ds.Tables.Count > 0)
+                {
+                    DataGridViewTK.DataSource = ds.Tables[0];
+                    DataGridViewTK.Refresh();
+                }
+            }
+        }
+    }
+}

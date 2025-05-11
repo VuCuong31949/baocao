@@ -73,9 +73,9 @@
     <Property Name="NgayPhanBien" Type="DateTime" Nullable="false" Precision="0" />
     <Property Name="IDTapChiBaiViet" Type="Int32" Nullable="false" />
     <Property Name="IDNguoiPhanBien" Type="Int32" Nullable="false" />
+    <Property Name="filePB" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="NguoiDung" Relationship="Self.FK__PhanBien__IDNguo__4AB81AF0" FromRole="PhanBien" ToRole="NguoiDung" />
     <NavigationProperty Name="TapChiBaiViet" Relationship="Self.FK__PhanBien__IDTapC__49C3F6B7" FromRole="PhanBien" ToRole="TapChiBaiViet" />
-    <Property Name="filePB" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="PhanCong">
     <Key>
@@ -136,11 +136,11 @@
     <Property Name="IDLinhVuc" Type="Int32" Nullable="false" />
     <Property Name="TrangThai" Type="Int32" />
     <Property Name="NgayGui" Type="DateTime" Nullable="false" Precision="0" />
-    <Property Name="GhiChu" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
     <Property Name="TuKhoa" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
     <Property Name="IDNguoiGui" Type="Int32" />
     <Property Name="DongTacGia" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
     <Property Name="TrangThaiPhanBien" Type="Int32" />
+    <Property Name="TomTat" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="LichSuChinhSuas" Relationship="Self.FK_LichSuChinhSua_TapChi" FromRole="TapChiBaiViet" ToRole="LichSuChinhSua" />
     <NavigationProperty Name="LinhVuc" Relationship="Self.FK__TapChiBai__IDLin__45F365D3" FromRole="TapChiBaiViet" ToRole="LinhVuc" />
     <NavigationProperty Name="NguoiDung" Relationship="Self.FK_TapChiBaiViet_NguoiDung" FromRole="TapChiBaiViet" ToRole="NguoiDung" />

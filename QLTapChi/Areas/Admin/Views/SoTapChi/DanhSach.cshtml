@@ -1,0 +1,125 @@
+﻿@model IEnumerable<QLTapChi.Models.SoTapChi>
+
+@{
+    ViewBag.Title = "Danh Sách Số Tạp Chí";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<style>
+    .container {
+        margin-top: 20px;
+        padding: 20px;
+    }
+
+    h2 {
+        color: #0d6efd;
+        margin-bottom: 20px;
+    }
+
+    .card {
+        border: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+    }
+
+    .table thead {
+        background-color: #0d6efd;
+        color: white;
+    }
+
+    .table tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .no-data {
+        text-align: center;
+        color: #6c757d;
+        padding: 20px;
+    }
+
+    .btn-primary {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+</style>
+
+<div class="container">
+    <h2><i class="fas fa-book me-2"></i>Danh Sách Số Tạp Chí</h2>
+
+    <!-- Thông báo -->
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-triangle me-2"></i>@TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>@TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <!-- Nút thêm mới -->
+    <div class="mb-3">
+        <a href="@Url.Action("Them", "SoTapChi", new { area = "Admin" })" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i>Thêm Số Tạp Chí
+        </a>
+    </div>
+
+    <!-- Bảng danh sách -->
+    <div class="card">
+        <div class="card-body p-0">
+            <table class="table table-hover table-bordered mb-0">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên Số</th>
+                        <th>Chủ Đề</th>
+                        <th>Ngày Phát Hành</th>
+                        <th>Mô Tả</th>
+                        <th>Hành Động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.IDSoTapChi</td>
+                            <td>@item.TenSo</td>
+                            <td>@item.ChuDe</td>
+                            <td>@item.NgayPhatHanh.ToString("dd/MM/yyyy")</td>
+                            <td>@item.MoTa</td>
+                            <td>
+                                <a href="@Url.Action("Sua", "SoTapChi", new { area = "Admin", id = item.IDSoTapChi })" class="btn btn-sm btn-warning">
+                                    <i class="fas fa-edit me-1"></i>Sửa
+                                </a>
+                                <form action="@Url.Action("Xoa", "SoTapChi", new { area = "Admin", id = item.IDSoTapChi })" method="post" style="display:inline;" onsubmit="return confirm('Bạn có chắc muốn xóa số tạp chí này?');">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-sm btn-danger">
+                                        <i class="fas fa-trash-alt me-1"></i>Xóa
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                    <tr class="no-data" style="display: @(Model.Any() ? "none" : "table-row")">
+                        <td colspan="6">Không có số tạp chí nào.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

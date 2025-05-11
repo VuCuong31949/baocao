@@ -62,7 +62,7 @@ namespace QLTapChi.Areas.Admin.Controllers
             updateModel.TieuDe = model.TieuDe;
             updateModel.TrangThai = model.TrangThai;
             updateModel.LinhVuc = model.LinhVuc;
-            updateModel.GhiChu = model.GhiChu;
+            updateModel.TomTat = model.TomTat;
            
             
             if (File != null && File.ContentLength > 0)

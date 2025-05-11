@@ -217,6 +217,11 @@ namespace QLTapChi.Controllers
         public ActionResult DangXuat()
         {
             Session.Clear();
+            // Xóa các cookie được tạo trong DangNhap
+            CookieHelper.delete("UserName");
+            CookieHelper.delete("UserId");
+            CookieHelper.delete("LoaiNguoiDung");
+            CookieHelper.delete("LoaiBienTapVien");
             return View("DangNhap");
         }
 

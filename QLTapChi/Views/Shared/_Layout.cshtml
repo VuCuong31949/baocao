@@ -33,7 +33,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">GIỚI THIỆU</a>
+                        <a class="nav-link" href="/home/index">GIỚI THIỆU</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">HỘI ĐỒNG BIÊN TẬP</a>
@@ -43,8 +43,8 @@
                             CÁC SỐ TẠP CHÍ
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Số hiện tại</a></li>
-                            <li><a class="dropdown-item" href="#">Đã xuất bản</a></li>
+                            <li><a class="dropdown-item" href="/SoTapChi/SoHienTai">Số hiện tại</a></li>
+                            <li><a class="dropdown-item" href="/SoTapChi/PublishAll">Đã xuất bản</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -57,7 +57,7 @@
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
-                        
+
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             GỬI BÀI
                         </a>
@@ -107,8 +107,12 @@
                         </li>
                     }
                 </ul>
-                <form class="d-flex search-form align-items-center" role="search">
+                @*<form class="d-flex search-form align-items-center" role="search">
                     <input class="form-control me-1 mt-3" style="max-width: 150px;" type="search" placeholder="Tìm kiếm..." aria-label="Search">
+                    <button class="btn btn-outline-primary" type="submit"><i class="fas fa-search"></i></button>
+                </form>*@
+                <form class="d-flex search-form align-items-center" method="get" action="@Url.Action("Index", "Home")" role="search">
+                    <input class="form-control me-1 mt-3" style="max-width: 150px;" type="search" name="search" placeholder="Tìm kiếm..." aria-label="Search" value="@Request.QueryString["search"]">
                     <button class="btn btn-outline-primary" type="submit"><i class="fas fa-search"></i></button>
                 </form>
             </div>

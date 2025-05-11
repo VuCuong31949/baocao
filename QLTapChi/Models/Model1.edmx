@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="QLTapChiModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="QLTapChiModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="BienTapVien">
           <Key>
             <PropertyRef Name="IDBienTapVien" />
@@ -123,11 +123,11 @@
           <Property Name="IDLinhVuc" Type="int" Nullable="false" />
           <Property Name="TrangThai" Type="int" />
           <Property Name="NgayGui" Type="date" Nullable="false" />
-          <Property Name="GhiChu" Type="nvarchar" MaxLength="500" />
           <Property Name="TuKhoa" Type="nvarchar" MaxLength="300" />
           <Property Name="IDNguoiGui" Type="int" />
           <Property Name="DongTacGia" Type="nvarchar" MaxLength="500" />
           <Property Name="TrangThaiPhanBien" Type="int" />
+          <Property Name="TomTat" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="XuatBan">
           <Key>
@@ -377,7 +377,8 @@
             <End Role="XuatBan" EntitySet="XuatBan" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="QLTapChiModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -454,9 +455,9 @@
           <Property Name="NgayPhanBien" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="IDTapChiBaiViet" Type="Int32" Nullable="false" />
           <Property Name="IDNguoiPhanBien" Type="Int32" Nullable="false" />
+          <Property Name="filePB" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="NguoiDung" Relationship="Self.FK__PhanBien__IDNguo__4AB81AF0" FromRole="PhanBien" ToRole="NguoiDung" />
           <NavigationProperty Name="TapChiBaiViet" Relationship="Self.FK__PhanBien__IDTapC__49C3F6B7" FromRole="PhanBien" ToRole="TapChiBaiViet" />
-          <Property Name="filePB" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="PhanCong">
           <Key>
@@ -517,11 +518,11 @@
           <Property Name="IDLinhVuc" Type="Int32" Nullable="false" />
           <Property Name="TrangThai" Type="Int32" />
           <Property Name="NgayGui" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="GhiChu" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="TuKhoa" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="IDNguoiGui" Type="Int32" />
           <Property Name="DongTacGia" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="TrangThaiPhanBien" Type="Int32" />
+          <Property Name="TomTat" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="LichSuChinhSuas" Relationship="Self.FK_LichSuChinhSua_TapChi" FromRole="TapChiBaiViet" ToRole="LichSuChinhSua" />
           <NavigationProperty Name="LinhVuc" Relationship="Self.FK__TapChiBai__IDLin__45F365D3" FromRole="TapChiBaiViet" ToRole="LinhVuc" />
           <NavigationProperty Name="NguoiDung" Relationship="Self.FK_TapChiBaiViet_NguoiDung" FromRole="TapChiBaiViet" ToRole="NguoiDung" />
@@ -847,12 +848,12 @@
           <EntitySetMapping Name="PhanBiens">
             <EntityTypeMapping TypeName="QLTapChiModel.PhanBien">
               <MappingFragment StoreEntitySet="PhanBien">
-                <ScalarProperty Name="filePB" ColumnName="filePB" />
                 <ScalarProperty Name="IDPhanBien" ColumnName="IDPhanBien" />
                 <ScalarProperty Name="NhanXet" ColumnName="NhanXet" />
                 <ScalarProperty Name="NgayPhanBien" ColumnName="NgayPhanBien" />
                 <ScalarProperty Name="IDTapChiBaiViet" ColumnName="IDTapChiBaiViet" />
                 <ScalarProperty Name="IDNguoiPhanBien" ColumnName="IDNguoiPhanBien" />
+                <ScalarProperty Name="filePB" ColumnName="filePB" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -913,11 +914,11 @@
                 <ScalarProperty Name="IDLinhVuc" ColumnName="IDLinhVuc" />
                 <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
                 <ScalarProperty Name="NgayGui" ColumnName="NgayGui" />
-                <ScalarProperty Name="GhiChu" ColumnName="GhiChu" />
                 <ScalarProperty Name="TuKhoa" ColumnName="TuKhoa" />
                 <ScalarProperty Name="IDNguoiGui" ColumnName="IDNguoiGui" />
                 <ScalarProperty Name="DongTacGia" ColumnName="DongTacGia" />
                 <ScalarProperty Name="TrangThaiPhanBien" ColumnName="TrangThaiPhanBien" />
+                <ScalarProperty Name="TomTat" ColumnName="TomTat" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

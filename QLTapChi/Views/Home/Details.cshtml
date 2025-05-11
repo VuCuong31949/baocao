@@ -1,0 +1,194 @@
+﻿@model QLTapChi.Models.TapChiBaiViet
+
+@{
+    ViewBag.Title = Model.TieuDe;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .article-details {
+        margin: 20px 0;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-family: Arial, sans-serif;
+    }
+
+    /* Tiêu đề và đồng tác giả ở trên cùng */
+    .article-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+        .article-header h1 {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .article-header .authors {
+            font-size: 1rem;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+            .article-header .authors a {
+                color: #007bff;
+                text-decoration: none;
+            }
+
+                .article-header .authors a:hover {
+                    text-decoration: underline;
+                }
+
+    /* Bố cục chính: Ngày và Từ khóa bên trái, Tóm tắt bên phải */
+    .article-content {
+        display: flex;
+        gap: 30px;
+    }
+
+    /* Cột bên trái (Ngày và Từ khóa) */
+    .dates-section {
+        flex: 1;
+        font-size: 0.95rem;
+        color: #555;
+        background-color: #fff;
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+        .dates-section p {
+            margin: 5px 0;
+        }
+
+        .dates-section .section-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .dates-section .content {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #444;
+            margin-bottom: 20px;
+        }
+
+    /* Cột bên phải (Tóm tắt và PDF) */
+    .content-section {
+        flex: 3;
+        background-color: #fff;
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+        .content-section .section-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .content-section .content {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #444;
+            margin-bottom: 20px;
+        }
+
+        .content-section .pdf-link {
+            display: inline-flex;
+            align-items: center;
+            color: #d93c08;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+            .content-section .pdf-link:hover {
+                text-decoration: underline;
+            }
+
+        .content-section .pdf-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+        }
+
+    /* Nút quay lại */
+    .back-link {
+        display: inline-block;
+        margin-top: 20px;
+        color: #007bff;
+        text-decoration: none;
+        font-size: 0.9rem;
+    }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+</style>
+
+<div class="container">
+    <div class="container article-details">
+        <!-- Tiêu đề và đồng tác giả ở trên cùng -->
+        <div class="article-header">
+            <h1>@Model.TieuDe</h1>
+            <p class="authors">
+                @foreach (var author in Model.DongTacGia.Split(new[] { ", " }, StringSplitOptions.None))
+                {
+                    <span>
+                        @author
+                        @if (author == Model.DongTacGia.Split(new[] { ", " }, StringSplitOptions.None).Last())
+                        {
+                            <sup>*</sup>
+
+                        }
+                        else
+                        {
+                            <span>, </span>
+                        }
+                    </span>
+                }
+            </p>
+        </div>
+
+        <!-- Bố cục chính: Ngày và Từ khóa bên trái, Tóm tắt bên phải -->
+        <div class="article-content">
+            <!-- Cột bên trái: Ngày và Từ khóa -->
+            <div class="dates-section">
+                <p><strong>Ngày nhận bài:</strong> @Model.NgayGui.ToString("dd-MM-yyyy")</p>
+                <!-- Nếu có thêm các ngày khác, bạn có thể thêm ở đây -->
+                <h2 class="section-title">Từ khóa</h2>
+                <p class="content">
+                    @Model.TuKhoa
+                </p>
+            </div>
+
+            <!-- Cột bên phải: Tóm tắt và PDF -->
+            <div class="content-section">
+                <div>
+                    <a href="@Model.NoiDung" class="pdf-link" target="_blank">
+                        <svg class="pdf-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+                            <path fill="#d93c08" d="M0 64C0 28.7 28.7 0 64 0L224 0l0 128c0 17.7 14.3 32 32 32l128 0 0 288c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64zm384 64l-128 0L256 0 384 128z" />
+                        </svg>
+                        Full Text: PDF
+                    </a>
+                </div>
+                <h2 class="section-title">Tóm tắt</h2>
+                <p class="content">
+                    @Model.TomTat
+                </p>
+            </div>
+        </div>
+
+        <!-- Nút quay lại -->
+        <a href="@Url.Action("Index", "Home")" class="back-link">Quay lại danh sách bài viết</a>
+    </div>
+</div>

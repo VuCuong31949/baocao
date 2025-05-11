@@ -139,10 +139,12 @@
     <Compile Include="Areas\Admin\Controllers\LinhVucController.cs" />
     <Compile Include="Areas\Admin\Controllers\PhanBienController.cs" />
     <Compile Include="Areas\Admin\Controllers\PhanCongController.cs" />
+    <Compile Include="Areas\Admin\Controllers\SoTapChiController.cs" />
     <Compile Include="Areas\Admin\Controllers\XuatBanController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PhanBienController.cs" />
+    <Compile Include="Controllers\SoTapChiController.cs" />
     <Compile Include="Controllers\TaiKhoanController.cs" />
     <Compile Include="Controllers\TapChiController.cs" />
     <Compile Include="Global.asax.cs">
@@ -198,6 +200,7 @@
     <Compile Include="Models\TapChiBaiViet.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TapChiBaiVietDTO.cs" />
     <Compile Include="Models\XemPhanBienViewModel.cs" />
     <Compile Include="Models\XuatBan.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -1486,7 +1489,9 @@
     <Content Include="Content\clients\dist\js\pages\dashboard3.js" />
     <Content Include="Content\Images\Logo.jpg" />
     <Content Include="Content\Images\Logo.png" />
+    <Content Include="Content\sendTuChoi.html" />
     <Content Include="Content\send_phanbien.html" />
+    <Content Include="Content\TuChoiPB.html" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -1563,6 +1568,9 @@
     <Content Include="Areas\Admin\Views\PhanCong\DanhSachPhanCong.cshtml" />
     <Content Include="Areas\Admin\Views\PhanCong\BaiVietChoDuyet.cshtml" />
     <Content Include="Areas\Admin\Views\PhanCong\BaiVietChoPhanBien.cshtml" />
+    <Content Include="Areas\Admin\Views\PhanBien\DanhSachDaPhanBien.cshtml" />
+    <Content Include="Areas\Admin\Views\XuatBan\DanhSachDaPhanBien.cshtml" />
+    <Content Include="Areas\Admin\Views\XuatBan\XuatBan.cshtml" />
     <EntityDeploy Include="Models\Model1.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Model1.Designer.cs</LastGenOutput>
@@ -1570,9 +1578,11 @@
     <Content Include="Models\Model1.edmx.diagram">
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
-    <Content Include="Areas\Admin\Views\PhanBien\DanhSachDaPhanBien.cshtml" />
-    <Content Include="Areas\Admin\Views\XuatBan\DanhSachDaPhanBien.cshtml" />
-    <Content Include="Areas\Admin\Views\XuatBan\XuatBan.cshtml" />
+    <Content Include="Areas\Admin\Views\SoTapChi\DanhSach.cshtml" />
+    <Content Include="Areas\Admin\Views\SoTapChi\Them.cshtml" />
+    <Content Include="Areas\Admin\Views\SoTapChi\Sua.cshtml" />
+    <Content Include="Areas\Admin\Views\LinhVuc\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\LinhVuc\Details.cshtml" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />
@@ -1595,8 +1605,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\TaiKhoan\DanhSachTaiKhoan.cshtml" />
     <Content Include="Views\TaiKhoan\ThemTaiKhoan.cshtml" />
@@ -1612,6 +1620,10 @@
     <Content Include="Views\PhanBien\GuiPhanBien.cshtml" />
     <Content Include="Views\PhanBien\DSDaPhanBien.cshtml" />
     <Content Include="Views\TapChi\ChinhSuaSauPhanBien.cshtml" />
+    <Content Include="Views\Home\Details.cshtml" />
+    <Content Include="Views\SoTapChi\SoHienTai.cshtml" />
+    <Content Include="Views\SoTapChi\PublishAll.cshtml" />
+    <Content Include="Views\SoTapChi\IssueDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

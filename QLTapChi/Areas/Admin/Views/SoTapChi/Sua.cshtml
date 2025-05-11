@@ -1,0 +1,92 @@
+﻿@model QLTapChi.Models.SoTapChi
+
+@{
+    ViewBag.Title = "Sửa Số Tạp Chí";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<style>
+    .container {
+        margin-top: 20px;
+        padding: 20px;
+    }
+
+    h2 {
+        color: #0d6efd;
+        margin-bottom: 20px;
+    }
+
+    .btn-primary {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #5a6268;
+        }
+</style>
+
+<div class="container">
+    <h2><i class="fas fa-edit me-2"></i>Sửa Số Tạp Chí</h2>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-triangle me-2"></i>@TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @using (Html.BeginForm("Sua", "SoTapChi", new { area = "Admin" }, FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.IDSoTapChi)
+
+        <div class="mb-3">
+            <label for="TenSo" class="form-label">Tên Số</label>
+            @Html.TextBoxFor(model => model.TenSo, new { @class = "form-control", required = "required", placeholder = "Ví dụ: Số 1/2024" })
+            @Html.ValidationMessageFor(model => model.TenSo, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            <label for="ChuDe" class="form-label">Chủ Đề</label>
+            @Html.TextBoxFor(model => model.ChuDe, new { @class = "form-control", placeholder = "Chủ đề chính (nếu có)" })
+            @Html.ValidationMessageFor(model => model.ChuDe, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            <label for="NgayPhatHanh" class="form-label">Ngày Phát Hành</label>
+            @Html.TextBoxFor(model => model.NgayPhatHanh, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date", required = "required" })
+            @Html.ValidationMessageFor(model => model.NgayPhatHanh, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            <label for="MoTa" class="form-label">Mô Tả</label>
+            @Html.TextAreaFor(model => model.MoTa, new { @class = "form-control", rows = "3", placeholder = "Mô tả ngắn gọn (nếu có)" })
+            @Html.ValidationMessageFor(model => model.MoTa, "", new { @class = "text-danger" })
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save me-2"></i>Cập Nhật
+        </button>
+        <a href="@Url.Action("DanhSach", "SoTapChi", new { area = "Admin" })" class="btn btn-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Quay Lại
+        </a>
+    }
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

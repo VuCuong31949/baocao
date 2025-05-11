@@ -46,6 +46,11 @@
             <input type="file" name="File" class="form-control" />
         </div>
         <div class="form-group">
+            <label>Tóm tắt</label>
+            @Html.TextBoxFor(m => m.TomTat, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.TomTat, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
             <label>Ghi chú chỉnh sửa</label>
             <textarea name="GhiChu" class="form-control" rows="4"></textarea>
         </div>

@@ -1,34 +1,64 @@
 ﻿@model IEnumerable<QLTapChi.Models.LinhVuc>
 
 @{
-    ViewBag.Title = "DanhSachLinhVuc";
+    ViewBag.Title = "Danh Sách Lĩnh Vực";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h2>DanhSachLinhVuc</h2>
+<div class="p-3">
+    <h2 class="p-2 text-bg-light w-75">Danh Sách Lĩnh Vực</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.TenLinhVuc)
-        </th>
-        <th></th>
-    </tr>
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Error"]
+        </div>
+    }
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.TenLinhVuc)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.IDLinhVuc }) |
-            @Html.ActionLink("Details", "Details", new { id=item.IDLinhVuc }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.IDLinhVuc })
-        </td>
-    </tr>
+    <p>
+        <a href="@Url.Action("createLV", "LinhVuc")" class="btn btn-primary">
+            <i class="fas fa-plus me-1"></i> Thêm Lĩnh Vực Mới
+        </a>
+    </p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Tên Lĩnh Vực</th>
+                <th>Thao Tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.TenLinhVuc)</td>
+                    <td>
+                        <a href="@Url.Action("Delete", "LinhVuc", new { id = item.IDLinhVuc })"
+                           onclick="return confirm('Bạn có chắc chắn muốn xóa lĩnh vực này không?');">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                        | 
+                        <a href="@Url.Action("Edit", "LinhVuc", new { id = item.IDLinhVuc })">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        | 
+                        <a href="@Url.Action("Details", "LinhVuc", new { id = item.IDLinhVuc })">
+                            <i class="fas fa-info-circle"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section scripts {
+    <script>
+        // Nếu cần thêm JavaScript, bạn có thể thêm ở đây
+    </script>
 }
-
-</table>
