@@ -93,64 +93,7 @@ namespace QLTapChi.Controllers
                 default: return "Không xác định";
             }
         }
-        //public ActionResult DanhSachDaChapNhan()
-        //{
-        //    // Kiểm tra đăng nhập
-        //    if (Session["idUser"] == null)
-        //    {
-        //        TempData["Error"] = "Bạn chưa đăng nhập hoặc không có quyền truy cập.";
-        //        return RedirectToAction("DangNhap", "TaiKhoan");
-        //    }
-
-        //    // Lấy ID người phản biện từ session
-        //    int idPB = (int)Session["idUser"];
-
-        //    // Lấy danh sách bài viết đã chấp nhận phản biện
-        //    var baiDaChapNhan = (from b in db.TapChiBaiViets
-        //                         join p in db.PhanCongs on b.IDTapChiBaiViet equals p.IDTapChiBaiViet
-        //                         where (p.TrangThaiPhanBien == 5 || p.TrangThaiPhanBien == 3 || p.TrangThaiPhanBien == 4) && p.IDNguoiPhanBien == idPB
-        //                         orderby b.NgayGui descending
-        //                         select b).ToList();
-
-        //    return View(baiDaChapNhan);
-        //}
-        //public ActionResult DanhSachDaChapNhan()
-        //{
-        //    if (Session["idUser"] == null)
-        //    {
-        //        TempData["Error"] = "Bạn chưa đăng nhập hoặc không có quyền truy cập.";
-        //        return RedirectToAction("DangNhap", "TaiKhoan");
-        //    }
-
-        //    int idPB = (int)Session["idUser"];
-
-        //    // Lấy danh sách bài viết và vòng phản biện mới nhất cho người phản biện
-        //    var danhSachPhanCong = (from b in db.TapChiBaiViets
-        //                            join p in db.PhanCongs on b.IDTapChiBaiViet equals p.IDTapChiBaiViet
-        //                            where p.IDNguoiPhanBien == idPB && (p.TrangThaiPhanBien == 5 || p.TrangThaiPhanBien == 3 || p.TrangThaiPhanBien == 4)
-        //                            group p by p.IDTapChiBaiViet into g
-        //                            let maxVongPhanBien = g.Max(p => p.VongPhanBien)
-        //                            from p in g
-        //                            where p.VongPhanBien == maxVongPhanBien
-        //                            orderby p.NgayPhanCong descending
-        //                            select new PhanCongViewModel
-        //                            {
-        //                                IDPhanCong = p.IDPhanCong,
-        //                                TieuDeBaiViet = p.TapChiBaiViet.TieuDe,
-        //                                TacGia = p.TapChiBaiViet.TacGia,
-        //                                TrangThaiPhanBien = p.TrangThaiPhanBien,
-        //                                NgayPhanCong = p.NgayPhanCong,
-        //                                VongPhanBien = p.VongPhanBien,
-        //                                IDTapChiBaiViet = p.IDTapChiBaiViet
-        //                            }).ToList();
-
-        //    foreach (var item in danhSachPhanCong)
-        //    {
-        //        item.TrangThaiPhanBienText = GetTrangThaiPhanBienText(item.TrangThaiPhanBien);
-        //    }
-
-        //    return View(danhSachPhanCong);
-        //}
+      
         public ActionResult DanhSachDaChapNhan()
         {
             if (Session["idUser"] == null)
@@ -218,55 +161,7 @@ namespace QLTapChi.Controllers
             TempData["Success"] = "Bạn đã chấp nhận phân công phản biện thành công.";
             return RedirectToAction("PhanBien");
         }
-        //public ActionResult TuChoiPhanBien(int id)
-        //{
-        //    // Kiểm tra đăng nhập
-        //    if (Session["idUser"] == null)
-        //    {
-        //        TempData["Error"] = "Bạn chưa đăng nhập hoặc không có quyền truy cập.";
-        //        return RedirectToAction("DangNhap", "TaiKhoan");
-        //    }
 
-        //    // Lấy ID người phản biện từ session
-        //    int idPB = (int)Session["idUser"];
-
-        //    // Tìm phân công dựa trên ID bài viết và ID người phản biện
-        //    var phanCong = db.PhanCongs.FirstOrDefault(p => p.IDTapChiBaiViet == id && p.IDNguoiPhanBien == idPB);
-        //    if (phanCong == null)
-        //    {
-        //        TempData["Error"] = "Không tìm thấy thông tin phân công.";
-        //        return RedirectToAction("PhanBien");
-        //    }
-
-        //    // Kiểm tra trạng thái hiện tại
-        //    if (phanCong.TrangThaiPhanBien != 0) // Chỉ cho phép từ chối nếu trạng thái là "chưa phản hồi"
-        //    {
-        //        TempData["Error"] = "Phân công này đã được xử lý.";
-        //        return RedirectToAction("PhanBien");
-        //    }
-
-        //    // Xóa bản ghi phân công
-        //    db.PhanCongs.Remove(phanCong);
-
-        //    // Kiểm tra số lượng người phản biện còn lại
-        //    var baiViet = db.TapChiBaiViets.FirstOrDefault(b => b.IDTapChiBaiViet == id);
-        //    if (baiViet != null)
-        //    {
-        //        int soLuongPhanBien = db.PhanCongs.Count(p => p.IDTapChiBaiViet == id);
-        //        if (soLuongPhanBien < 2 && baiViet.TrangThai == 2)
-        //        {
-        //            // Nếu chưa đủ 2 người phản biện, đưa bài viết về trạng thái chờ phân công
-        //            baiViet.TrangThai = 1; // Chưa phân công phản biện
-        //            baiViet.TrangThaiPhanBien = 0; // Chờ phản biện
-        //        }
-        //    }
-
-        //    // Lưu thay đổi
-        //    db.SaveChanges();
-        //    TempData["Success"] = "Bài viết đã từ chối phản biện ";
-
-        //    return RedirectToAction("PhanBien");
-        //}
         public ActionResult TuChoiPhanBien(int id)
         {
             // Kiểm tra đăng nhập
@@ -301,7 +196,7 @@ namespace QLTapChi.Controllers
                 TempData["Error"] = "Không tìm thấy bài viết.";
                 return RedirectToAction("PhanBien");
             }
-
+            baiViet.TrangThai = 1;
             // Lấy thông tin người phản biện
             var nguoiPhanBien = db.NguoiDungs.FirstOrDefault(nd => nd.IDNguoiDung == idPB);
             if (nguoiPhanBien == null)
@@ -375,261 +270,7 @@ namespace QLTapChi.Controllers
             return RedirectToAction("PhanBien");
         }
 
-        //public ActionResult GuiPhanBien(int id)
-        //{
-        //    // Kiểm tra đăng nhập
-        //    if (Session["idUser"] == null)
-        //    {
-        //        TempData["Error"] = "Bạn chưa đăng nhập hoặc không có quyền truy cập.";
-        //        return RedirectToAction("DangNhap", "TaiKhoan");
-        //    }
 
-        //    // Lấy ID người phản biện từ session
-        //    int idPB = (int)Session["idUser"];
-
-        //    // Tìm bài viết theo ID
-        //    var baiViet = db.TapChiBaiViets.FirstOrDefault(b => b.IDTapChiBaiViet == id);
-        //    if (baiViet == null)
-        //    {
-        //        TempData["Error"] = "Không tìm thấy bài viết.";
-        //        return RedirectToAction("PhanBien");
-        //    }
-
-        //    // Kiểm tra xem người dùng có được phân công phản biện bài này không
-        //    var phanCong = db.PhanCongs.FirstOrDefault(p => p.IDTapChiBaiViet == id && p.IDNguoiPhanBien == idPB);
-        //    if (phanCong == null)
-        //    {
-        //        TempData["Error"] = "Bạn không được phân công phản biện bài viết này.";
-        //        return RedirectToAction("PhanBien");
-        //    }
-
-        //    // Trả về view với thông tin bài viết
-        //    return View(baiViet);
-        //}
-
-        //[HttpPost]
-        //public ActionResult GuiPhanBien(int IDTapChiBaiViet, string NhanXet, int TrangThaiPhanBien, HttpPostedFileBase fileUpload)
-        //{
-        //    if (Session["idUser"] == null)
-        //    {
-        //        TempData["Error"] = "Bạn chưa đăng nhập hoặc không có quyền truy cập.";
-        //        return RedirectToAction("DangNhap", "TaiKhoan");
-        //    }
-
-        //    int idPB = (int)Session["idUser"];
-        //    var phanCong = db.PhanCongs.FirstOrDefault(p => p.IDTapChiBaiViet == IDTapChiBaiViet && p.IDNguoiPhanBien == idPB);
-        //    if (phanCong == null)
-        //    {
-        //        TempData["Error"] = "Không tìm thấy phân công.";
-        //        return RedirectToAction("PhanBien");
-        //    }
-
-        //    // Cập nhật trạng thái phân công
-
-        //    phanCong.TrangThaiPhanBien = TrangThaiPhanBien;
-        //    phanCong.NgayPhanCong = DateTime.Now;
-
-        //    // Lưu nội dung phản biện vào bảng PhanBien
-        //    var phanBien = new PhanBien
-        //    {
-        //        NhanXet = NhanXet,
-        //        NgayPhanBien = DateTime.Now,
-        //        IDTapChiBaiViet = IDTapChiBaiViet,
-        //        IDNguoiPhanBien = idPB
-        //    };
-
-        //    // Xử lý file upload nếu có
-        //    if (fileUpload != null && fileUpload.ContentLength > 0)
-        //    {
-        //        string rootFolder = Server.MapPath("/Content/PhanBien/");
-        //        string pathFile = rootFolder + fileUpload.FileName;
-        //        fileUpload.SaveAs(pathFile);
-        //        phanBien.filePB = "Content/PhanBien/" + fileUpload.FileName;
-        //    }
-
-        //    // Thêm phản biện vào DB
-        //    db.PhanBiens.Add(phanBien);
-
-
-        //    var baiViet = db.TapChiBaiViets.FirstOrDefault(b => b.IDTapChiBaiViet == IDTapChiBaiViet);
-        //    if (baiViet != null)
-        //    {
-        //        var phanCongs = db.PhanCongs
-        //            .Where(p => p.IDTapChiBaiViet == IDTapChiBaiViet && p.VongPhanBien == phanCong.VongPhanBien)
-        //            .ToList();
-
-        //        // [Chỉnh sửa 2]: Thêm logic tạo vòng phản biện mới khi có "Sửa đổi lớn"
-        //        if (phanCongs.All(p => p.TrangThaiPhanBien != 0)) // Tất cả đã phản hồi
-        //        {
-        //            var trangThaiPhanBiens = phanCongs.Select(p => p.TrangThaiPhanBien).ToList();
-        //            int vongPhanBienHienTai = phanCong.VongPhanBien ?? 0;
-        //            const int SO_VONG_PHAN_BIEN_TOI_DA = 3;
-
-        //            if (trangThaiPhanBiens.All(t => t == 1)) // Tất cả đều "Đạt"
-        //            {
-        //                baiViet.TrangThaiPhanBien = 2; // Đạt, chờ xuất bản
-        //                baiViet.TrangThai = 4; // Xuất bản
-        //            }
-        //            else if (trangThaiPhanBiens.Any(t => t == 4)) // Có "Sửa đổi lớn"
-        //            {
-        //                int newVongPhanBien = vongPhanBienHienTai + 1;
-        //                if (newVongPhanBien <= SO_VONG_PHAN_BIEN_TOI_DA)
-        //                {
-        //                    foreach (var pc in phanCongs)
-        //                    {
-        //                        db.PhanCongs.Add(new PhanCong
-        //                        {
-        //                            IDTapChiBaiViet = IDTapChiBaiViet,
-        //                            IDNguoiPhanBien = pc.IDNguoiPhanBien,
-        //                            NgayPhanCong = DateTime.Now,
-        //                            VongPhanBien = newVongPhanBien,
-        //                            TrangThaiPhanBien = 0 // Chưa phản hồi
-        //                        });
-        //                    }
-        //                    baiViet.TrangThaiPhanBien = 1; // Đang phản biện
-        //                    baiViet.TrangThai = 2; // Đã phân công phản biện
-        //                }
-        //                else
-        //                {
-        //                    baiViet.TrangThaiPhanBien = 4; // Từ chối vĩnh viễn
-        //                    baiViet.TrangThai = 4; // Đánh dấu bài viết đã bị từ chối
-        //                }
-        //            }
-        //            else if (trangThaiPhanBiens.Any(t => t == 2)) // Có "Không đạt"
-        //            {
-        //                if (vongPhanBienHienTai >= SO_VONG_PHAN_BIEN_TOI_DA)
-        //                {
-        //                    baiViet.TrangThaiPhanBien = 4; // Từ chối vĩnh viễn
-        //                    baiViet.TrangThai = 4; // Đánh dấu bài viết đã bị từ chối
-        //                }
-        //                else
-        //                {
-        //                    baiViet.TrangThaiPhanBien = 3; // Không đạt, chờ chỉnh sửa
-        //                }
-        //            }
-        //            else if (trangThaiPhanBiens.Any(t => t == 3)) // Có "Sửa đổi nhỏ"
-        //            {
-        //                if (vongPhanBienHienTai >= SO_VONG_PHAN_BIEN_TOI_DA)
-        //                {
-        //                    baiViet.TrangThaiPhanBien = 4; // Từ chối vĩnh viễn
-        //                    baiViet.TrangThai = 4; // Đánh dấu bài viết đã bị từ chối
-        //                }
-        //                else
-        //                {
-        //                    baiViet.TrangThaiPhanBien = 3; // Không đạt, chờ chỉnh sửa
-        //                }
-        //            }
-        //        }
-        //        else
-        //        {
-        //            baiViet.TrangThaiPhanBien = 1; // Vẫn đang phản biện
-        //        }
-        //    }
-        //    // Lưu thay đổi
-        //    db.SaveChanges();
-
-        //    TempData["Success"] = "Gửi phản biện thành công.";
-        //    return RedirectToAction("PhanBien");
-        //}
-        //[HttpPost]
-        //public ActionResult GuiPhanBien(int IDTapChiBaiViet, string NhanXet, int TrangThaiPhanBien, HttpPostedFileBase fileUpload)
-        //{
-        //    if (Session["idUser"] == null)
-        //    {
-        //        TempData["Error"] = "Bạn chưa đăng nhập hoặc không có quyền truy cập.";
-        //        return RedirectToAction("DangNhap", "TaiKhoan");
-        //    }
-
-        //    int idPB = (int)Session["idUser"];
-        //    var phanCong = db.PhanCongs.FirstOrDefault(p => p.IDTapChiBaiViet == IDTapChiBaiViet && p.IDNguoiPhanBien == idPB);
-        //    if (phanCong == null)
-        //    {
-        //        TempData["Error"] = "Không tìm thấy phân công.";
-        //        return RedirectToAction("PhanBien");
-        //    }
-
-        //    // Cập nhật trạng thái phân công
-        //    phanCong.TrangThaiPhanBien = TrangThaiPhanBien;
-        //    phanCong.NgayPhanCong = DateTime.Now;
-
-        //    // Lưu nội dung phản biện vào bảng PhanBien
-        //    var phanBien = new PhanBien
-        //    {
-        //        NhanXet = NhanXet,
-        //        NgayPhanBien = DateTime.Now,
-        //        IDTapChiBaiViet = IDTapChiBaiViet,
-        //        IDNguoiPhanBien = idPB
-        //    };
-
-        //    // Xử lý file upload nếu có
-        //    if (fileUpload != null && fileUpload.ContentLength > 0)
-        //    {
-        //        string rootFolder = Server.MapPath("/Content/PhanBien/");
-        //        string pathFile = rootFolder + fileUpload.FileName;
-        //        fileUpload.SaveAs(pathFile);
-        //        phanBien.filePB = "Content/PhanBien/" + fileUpload.FileName;
-        //    }
-
-        //    // Thêm phản biện vào DB
-        //    db.PhanBiens.Add(phanBien);
-
-        //    // Cập nhật trạng thái bài viết
-        //    var baiViet = db.TapChiBaiViets.FirstOrDefault(b => b.IDTapChiBaiViet == IDTapChiBaiViet);
-        //    if (baiViet != null)
-        //    {
-        //        var phanCongs = db.PhanCongs
-        //            .Where(p => p.IDTapChiBaiViet == IDTapChiBaiViet && p.VongPhanBien == phanCong.VongPhanBien)
-        //            .ToList();
-
-        //        if (phanCongs.All(p => p.TrangThaiPhanBien != 0)) // Tất cả đã phản hồi
-        //        {
-        //            var trangThaiPhanBiens = phanCongs.Select(p => p.TrangThaiPhanBien).ToList();
-        //            int vongPhanBienHienTai = phanCong.VongPhanBien ?? 0;
-        //            const int SO_VONG_PHAN_BIEN_TOI_DA = 3;
-
-        //            if (trangThaiPhanBiens.All(t => t == 1)) // Tất cả đều "Đạt"
-        //            {
-        //                baiViet.TrangThaiPhanBien = 2; // Đạt, chờ xuất bản
-        //                baiViet.TrangThai = 4; // Xuất bản
-        //            }
-        //            else if (trangThaiPhanBiens.Any(t => t == 2)) // Có "Không đạt"
-        //            {
-        //                if (vongPhanBienHienTai >= SO_VONG_PHAN_BIEN_TOI_DA)
-        //                {
-        //                    baiViet.TrangThaiPhanBien = 4; // Từ chối vĩnh viễn
-        //                    baiViet.TrangThai = 4; // Đánh dấu bài viết đã bị từ chối
-        //                }
-        //                else
-        //                {
-        //                    baiViet.TrangThaiPhanBien = 3; // Không đạt, chờ chỉnh sửa
-        //                }
-        //            }
-        //            else if (trangThaiPhanBiens.Any(t => t == 3) || trangThaiPhanBiens.Any(t => t == 4)) // Có "Sửa đổi nhỏ" hoặc "Sửa đổi lớn"
-        //            {
-        //                if (vongPhanBienHienTai >= SO_VONG_PHAN_BIEN_TOI_DA)
-        //                {
-        //                    baiViet.TrangThaiPhanBien = 4; // Từ chối vĩnh viễn
-        //                    baiViet.TrangThai = 4; // Đánh dấu bài viết đã bị từ chối
-        //                }
-        //                else
-        //                {
-        //                    baiViet.TrangThaiPhanBien = 3; // Chờ chỉnh sửa (đưa vào trang Đợi nộp)
-        //                                                   // Không tạo vòng mới ngay lập tức, chờ tác giả chỉnh sửa
-        //                }
-        //            }
-        //        }
-        //        else
-        //        {
-        //            baiViet.TrangThaiPhanBien = 1; // Vẫn đang phản biện
-        //        }
-        //    }
-
-        //    // Lưu thay đổi
-        //    db.SaveChanges();
-
-        //    TempData["Success"] = "Gửi phản biện thành công.";
-        //    return RedirectToAction("PhanBien");
-        //}
         public ActionResult GuiPhanBien(int id)
         {
             if (Session["idUser"] == null)
@@ -645,7 +286,7 @@ namespace QLTapChi.Controllers
                 TempData["Error"] = "Không tìm thấy bài viết.";
                 return RedirectToAction("PhanBien");
             }
-
+            baiViet.TomTat = HttpUtility.HtmlDecode(baiViet.TomTat);
             // Lấy phân công ở vòng mới nhất
             var phanCong = db.PhanCongs
                 .Where(p => p.IDTapChiBaiViet == id && p.IDNguoiPhanBien == idPB)
@@ -667,119 +308,7 @@ namespace QLTapChi.Controllers
 
             return View(baiViet);
         }
-        //[HttpPost]
-        //public ActionResult GuiPhanBien(int IDTapChiBaiViet, string NhanXet, int TrangThaiPhanBien, HttpPostedFileBase fileUpload)
-        //{
-        //    if (Session["idUser"] == null)
-        //    {
-        //        TempData["Error"] = "Bạn chưa đăng nhập hoặc không có quyền truy cập.";
-        //        return RedirectToAction("DangNhap", "TaiKhoan");
-        //    }
-
-        //    int idPB = (int)Session["idUser"];
-
-        //    // Lấy phân công ở vòng mới nhất
-        //    var phanCong = db.PhanCongs
-        //        .Where(p => p.IDTapChiBaiViet == IDTapChiBaiViet && p.IDNguoiPhanBien == idPB)
-        //        .OrderByDescending(p => p.VongPhanBien)
-        //        .FirstOrDefault();
-
-        //    if (phanCong == null)
-        //    {
-        //        TempData["Error"] = "Không tìm thấy phân công.";
-        //        return RedirectToAction("PhanBien");
-        //    }
-
-        //    // Cập nhật trạng thái phân công
-        //    phanCong.TrangThaiPhanBien = TrangThaiPhanBien;
-        //    phanCong.NgayPhanCong = DateTime.Now;
-
-        //    // Lưu nội dung phản biện vào bảng PhanBien
-        //    var phanBien = new PhanBien
-        //    {
-        //        NhanXet = NhanXet,
-        //        NgayPhanBien = DateTime.Now,
-        //        IDTapChiBaiViet = IDTapChiBaiViet,
-        //        IDNguoiPhanBien = idPB
-        //    };
-
-        //    if (fileUpload != null && fileUpload.ContentLength > 0)
-        //    {
-        //        string rootFolder = Server.MapPath("/Content/PhanBien/");
-        //        string pathFile = rootFolder + fileUpload.FileName;
-        //        fileUpload.SaveAs(pathFile);
-        //        phanBien.filePB = "Content/PhanBien/" + fileUpload.FileName;
-        //    }
-
-        //    db.PhanBiens.Add(phanBien);
-
-        //    // Cập nhật trạng thái bài viết
-        //    var baiViet = db.TapChiBaiViets.FirstOrDefault(b => b.IDTapChiBaiViet == IDTapChiBaiViet);
-        //    if (baiViet != null)
-        //    {
-        //        // Lấy tất cả phân công ở vòng hiện tại (vòng mới nhất của người phản biện này)
-        //        var phanCongs = db.PhanCongs
-        //            .Where(p => p.IDTapChiBaiViet == IDTapChiBaiViet && p.VongPhanBien == phanCong.VongPhanBien)
-        //            .ToList();
-
-        //        if (phanCongs.All(p => p.TrangThaiPhanBien != 0)) // Tất cả đã phản hồi
-        //        {
-        //            var trangThaiPhanBiens = phanCongs.Select(p => p.TrangThaiPhanBien).ToList();
-        //            int vongPhanBienHienTai = phanCong.VongPhanBien ?? 0;
-        //            const int SO_VONG_PHAN_BIEN_TOI_DA = 3;
-
-        //            if (trangThaiPhanBiens.All(t => t == 1)) // Tất cả đều "Đạt"
-        //            {
-        //                // Kiểm tra xem có người phản biện khác ở vòng trước đạt không
-        //                var phanCongsVongTruoc = db.PhanCongs
-        //                    .Where(p => p.IDTapChiBaiViet == IDTapChiBaiViet && p.VongPhanBien < vongPhanBienHienTai)
-        //                    .ToList();
-        //                if (phanCongsVongTruoc.All(p => p.TrangThaiPhanBien == 1)) // Tất cả ở vòng trước cũng "Đạt"
-        //                {
-        //                    baiViet.TrangThaiPhanBien = 2; // Đạt, chờ xuất bản
-        //                    baiViet.TrangThai = 4; // Xuất bản
-        //                }
-        //                else
-        //                {
-        //                    baiViet.TrangThaiPhanBien = 3; // Chờ chỉnh sửa (vì có người ở vòng trước không đạt)
-        //                }
-        //            }
-        //            else if (trangThaiPhanBiens.Any(t => t == 2)) // Có "Không đạt"
-        //            {
-        //                if (vongPhanBienHienTai >= SO_VONG_PHAN_BIEN_TOI_DA)
-        //                {
-        //                    baiViet.TrangThaiPhanBien = 4; // Từ chối vĩnh viễn
-        //                    baiViet.TrangThai = 4; // Đánh dấu bài viết đã bị từ chối
-        //                }
-        //                else
-        //                {
-        //                    baiViet.TrangThaiPhanBien = 3; // Không đạt, chờ chỉnh sửa
-        //                }
-        //            }
-        //            else if (trangThaiPhanBiens.Any(t => t == 3) || trangThaiPhanBiens.Any(t => t == 4)) // Có "Sửa đổi nhỏ" hoặc "Sửa đổi lớn"
-        //            {
-        //                if (vongPhanBienHienTai >= SO_VONG_PHAN_BIEN_TOI_DA)
-        //                {
-        //                    baiViet.TrangThaiPhanBien = 4; // Từ chối vĩnh viễn
-        //                    baiViet.TrangThai = 4; // Đánh dấu bài viết đã bị từ chối
-        //                }
-        //                else
-        //                {
-        //                    baiViet.TrangThaiPhanBien = 3; // Chờ chỉnh sửa (đưa vào trang Đợi nộp)
-        //                }
-        //            }
-        //        }
-        //        else
-        //        {
-        //            baiViet.TrangThaiPhanBien = 1; // Vẫn đang phản biện
-        //        }
-        //    }
-
-        //    db.SaveChanges();
-
-        //    TempData["Success"] = "Gửi phản biện thành công.";
-        //    return RedirectToAction("PhanBien");
-        //}
+     
         [HttpPost]
         public ActionResult GuiPhanBien(int IDTapChiBaiViet, string NhanXet, int TrangThaiPhanBien, HttpPostedFileBase fileUpload)
         {
@@ -824,6 +353,7 @@ namespace QLTapChi.Controllers
             db.PhanBiens.Add(phanBien);
 
             var baiViet = db.TapChiBaiViets.FirstOrDefault(b => b.IDTapChiBaiViet == IDTapChiBaiViet);
+            baiViet.TomTat = HttpUtility.HtmlDecode(baiViet.TomTat);
             if (baiViet != null)
             {
                 var phanCongs = db.PhanCongs

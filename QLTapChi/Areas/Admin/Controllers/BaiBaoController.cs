@@ -115,7 +115,68 @@ namespace QLTapChi.Areas.Admin.Controllers
             // Trả về file dưới dạng download
             return File(filePath, "application/octet-stream", fileName);
         }
+        public ActionResult CapNhatBTV(int id)
+        {
+            // Check if the user is logged in
+            if (Session["idUser"] == null)
+            {
+                return RedirectToAction("DangNhap", "TaiKhoan", new { area = "" });
+            }
 
+            // Ensure the id matches the logged-in user's ID (for security)
+            int loggedInUserId;
+            if (!int.TryParse(Session["idUser"]?.ToString(), out loggedInUserId) || id != loggedInUserId)
+            {
+                return HttpNotFound(); // Or redirect to an error page
+            }
+
+            // Fetch the BienTapVien record
+            BienTapVien timkiemUser = db.BienTapViens.Find(id);
+            if (timkiemUser == null)
+            {
+                return HttpNotFound(); // Return 404 if the record is not found
+            }
+
+            // Pass the LinhVuc list to the view (to avoid creating DbContext in the view)
+            ViewBag.LinhVucList = db.LinhVucs.ToList();
+
+            return View(timkiemUser);
+        }
+        [HttpPost]
+        public ActionResult CapNhatBTV(BienTapVien model)
+        {
+            BienTapVien EditUser = db.BienTapViens.Find(model.IDBienTapVien);
+            // Kiểm tra tên đăng nhập trùng lặp
+            var checkTenDangNhap = db.BienTapViens.Any(u => u.HoTen == model.HoTen && u.IDBienTapVien != model.IDBienTapVien);
+            if (checkTenDangNhap)
+            {
+                ModelState.AddModelError("TenDangNhap", "Tên đăng nhập đã tồn tại.");
+                return View(EditUser);
+            }
+            // Kiểm tra số điện thoại trùng lặp
+            var checkSDT = db.BienTapViens.Any(u => u.SDT == model.SDT && u.IDBienTapVien != model.IDBienTapVien);
+            if (checkSDT)
+            {
+                ModelState.AddModelError("SDT", "Số điện thoại đã được sử dụng.");
+                return View(EditUser);
+            }
+
+            // Kiểm tra nếu mật khẩu đã được thay đổi, sau đó mã hóa mật khẩu
+            if (!string.IsNullOrEmpty(model.MatKhau) && EditUser.MatKhau != model.MatKhau)
+            {
+                EditUser.MatKhau = Hashing.ToSHA256(model.MatKhau); // Mã hóa mật khẩu trước khi lưu
+            }
+            EditUser.Email = model.Email;
+            EditUser.SDT = model.SDT;
+            EditUser.HoTen = model.HoTen;
+            EditUser.QuocGia = model.QuocGia;
+            EditUser.ChuyenNganh = model.ChuyenNganh;
+          
+
+            db.SaveChanges();
+
+            return RedirectToAction("Index", "BaiBao");
+        }
 
     }
 }

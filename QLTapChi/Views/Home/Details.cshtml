@@ -148,7 +148,6 @@
                         @if (author == Model.DongTacGia.Split(new[] { ", " }, StringSplitOptions.None).Last())
                         {
                             <sup>*</sup>
-
                         }
                         else
                         {
@@ -164,7 +163,10 @@
             <!-- Cột bên trái: Ngày và Từ khóa -->
             <div class="dates-section">
                 <p><strong>Ngày nhận bài:</strong> @Model.NgayGui.ToString("dd-MM-yyyy")</p>
-                <!-- Nếu có thêm các ngày khác, bạn có thể thêm ở đây -->
+                @if (!string.IsNullOrEmpty(ViewBag.NgayXuatBan))
+                {
+                    <p><strong>Ngày xuất bản:</strong> @ViewBag.NgayXuatBan</p>
+                }
                 <h2 class="section-title">Từ khóa</h2>
                 <p class="content">
                     @Model.TuKhoa

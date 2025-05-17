@@ -80,7 +80,10 @@
                             @Session["UserName"]
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="/TaiKhoan/DangXuat">Đăng Xuất</a>
+                           
+                                <a class="dropdown-item" href="@Url.Action("CapNhatBTV", "BaiBao", new { id = Session["idUser"] })">Thay đổi thông tin</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="/TaiKhoan/DangXuat">Đăng Xuất</a>
                         </div>
                     </li>
                 }
@@ -252,18 +255,7 @@
                                         <p>Danh Sách</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="~/Content/clients/index2.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Dashboard v2</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="~/Content/clients/index3.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Dashboard v3</p>
-                                    </a>
-                                </li>
+                               
                             </ul>
                         </li>
                         @if (Session["LoaiBienTapVien"] != null && Session["LoaiBienTapVien"].ToString() == "TongBienTap")

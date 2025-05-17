@@ -1,5 +1,5 @@
 ﻿@model QLTapChi.Models.TapChiBaiViet
-
+@using System.Web;
 @{
     ViewBag.Title = "GuiPhanBien";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -11,15 +11,19 @@
         <div class="col-lg-12">
             <div class="rb-journal-card">
                 <h2>Tạp chí: @Model.TieuDe</h2>
-                <p><strong>Tác giả:</strong> @Model.TacGia</p>
-                <p><strong>Tóm tắt:</strong> @Model.TomTat</p>
-                <p><strong>Ngày gửi:</strong> @Model.NgayGui</p>
-                <p><strong>Đồng tác giả:</strong> @Model.DongTacGia</p>
                 <p><strong>Từ khóa:</strong> @Model.TuKhoa</p>
-                <div class="mb-3">
-                    <label for="GhiChu" class="form-label">Tóm tắt</label>
-                    <textarea class="form-control" id="txtGhiChu" name="GhiChu" rows="6">@Model.TomTat</textarea>
+                <p><strong>Tác giả:</strong> @Model.TacGia</p>
+                @*<p><strong>Tóm tắt:</strong> @Model.TomTat</p>*@
+                <div>
+                    @Model.TomTat
                 </div>
+                <p><strong>Ngày gửi:</strong> @Model.NgayGui.ToString("dd-MM-yyyy")</p> <!-- Định dạng ngày -->
+                <p><strong>Đồng tác giả:</strong> @Model.DongTacGia</p>
+
+                @*<div class="mb-3">
+            <label for="GhiChu" class="form-label">Tóm tắt</label>
+            <textarea class="form-control" id="txtGhiChu" name="GhiChu" rows="6">@Model.TomTat</textarea>
+        </div>*@
                 <a href="@Url.Action("DownloadFile", "PhanBien", new { id = Model.IDTapChiBaiViet })" class="btn btn-primary">Tải xuống bài viết</a>
             </div>
         </div>

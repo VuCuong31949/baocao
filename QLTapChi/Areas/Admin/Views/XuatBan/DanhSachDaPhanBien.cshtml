@@ -264,7 +264,7 @@
                                             <input type="checkbox" class="form-check-input article-checkbox" id="article_@item.IDTapChiBaiViet" value="@item.IDTapChiBaiViet">
                                             <label class="form-check-label" for="article_@item.IDTapChiBaiViet">Chọn</label>
                                         </div>
-                                        <a href="javascript:void(0)" onclick="xuatBanMotBai(@item.IDTapChiBaiViet)" class="btn btn-sm btn-success mt-1">Xuất bản</a>
+                                        @*<a href="javascript:void(0)" onclick="xuatBanMotBai(@item.IDTapChiBaiViet)" class="btn btn-sm btn-success mt-1">Xuất bản</a>*@
                                     }
                                     else
                                     {
@@ -361,17 +361,17 @@
         }
     });
 
-  function xuatBanMotBai(idBaiViet) {
-    selectedArticlesInput.value = idBaiViet;
-    modalIDSoTapChi.value = ""; // Reset dropdown
-    articleList.innerHTML = "";
-    const title = document.querySelector(`#article_${idBaiViet}`).closest("tr").querySelector("td:first-child").textContent;
-    const li = document.createElement("li");
-    li.textContent = `${title} (ID: ${idBaiViet})`;
-    articleList.appendChild(li);
-    var modal = new bootstrap.Modal(document.getElementById("xuatBanModal"));
-    modal.show();
-}
+//  function xuatBanMotBai(idBaiViet) {
+//    selectedArticlesInput.value = idBaiViet;
+//    modalIDSoTapChi.value = ""; // Reset dropdown
+//    articleList.innerHTML = "";
+//    const title = document.querySelector(`#article_${idBaiViet}`).closest("tr").querySelector("td:first-child").textContent;
+//    const li = document.createElement("li");
+//    li.textContent = `${title} (ID: ${idBaiViet})`;
+//    articleList.appendChild(li);
+//    var modal = new bootstrap.Modal(document.getElementById("xuatBanModal"));
+//    modal.show();
+//}
 document.addEventListener("DOMContentLoaded", function () {
     const selectedId = '@ViewBag.SelectedArticleId';
     if (selectedId && selectedId !== '') {

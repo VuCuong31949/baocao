@@ -15,5 +15,6 @@ namespace QLTapChi.Models
         public string TuKhoa { get; set; }
         public string NoiDung { get; set; }
         public DateTime NgayGui { get; set; }
+        public DateTime? NgayXuatBan { get; set; } 
     }
 }

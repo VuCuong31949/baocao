@@ -1,0 +1,114 @@
+﻿@model List<QLTapChi.Models.TapChiBaiViet>
+
+@{
+    ViewBag.Title = "Xem File - Tạp chí Khoa học Đại học Nam Cần Thơ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .file-viewer-section {
+        margin-top: 20px;
+    }
+
+        .file-viewer-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+    .card {
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        padding: 20px;
+        transition: transform 0.2s;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+    .card-title {
+        font-size: 1.25rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+        .card-title a {
+            color: #333;
+            text-decoration: none;
+        }
+
+            .card-title a:hover {
+                color: #007bff;
+                text-decoration: underline;
+            }
+
+    .card-authors {
+        font-size: 0.9rem;
+        color: #555;
+        margin-bottom: 10px;
+    }
+
+    .card-actions {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .view-file-button {
+        color: #007bff;
+        text-decoration: none;
+        margin-right: 15px;
+        font-size: 0.9rem;
+    }
+
+        .view-file-button:hover {
+            text-decoration: underline;
+        }
+
+    .download-file-button {
+        color: #d93c08;
+        text-decoration: none;
+        font-size: 0.9rem;
+    }
+
+        .download-file-button:hover {
+            text-decoration: underline;
+        }
+
+    .no-files {
+        font-size: 1rem;
+        color: #555;
+        text-align: center;
+        margin-top: 20px;
+    }
+</style>
+
+<div class="container file-viewer-section">
+    <h3>Xem File - Tạp chí Khoa học Đại học Nam Cần Thơ</h3>
+
+    @if (Model.Any())
+    {
+        foreach (var baiViet in Model)
+        {
+            <div class="card">
+                <h5 class="card-title">
+                    <a href="@Url.Action("Details", "Home", new { id = baiViet.IDTapChiBaiViet })">@baiViet.TieuDe</a>
+                </h5>
+                <p class="card-authors">@baiViet.DongTacGia</p>
+                <div class="card-actions">
+                    <a href="@Url.Action("ViewFile", "Home", new { id = baiViet.IDTapChiBaiViet })" class="view-file-button">Xem File</a>
+                    <a href="@baiViet.NoiDung" class="download-file-button" target="_blank">Tải xuống</a>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p class="no-files">
+            Chưa có bài viết nào được xuất bản.
+        </p>
+    }
+</div>

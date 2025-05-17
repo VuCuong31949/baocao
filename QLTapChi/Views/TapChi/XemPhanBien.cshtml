@@ -68,7 +68,7 @@
                         <td>
                             @if (phanBien != null && !string.IsNullOrEmpty(phanBien.filePB))
                             {
-                                <a href="@Url.Action("DownloadFile", "PhanBien", new { id = Model.BaiViet.IDTapChiBaiViet })">Tải file</a>
+                                <a href="@Url.Action("DownloadFile", "TapChi", new { id = Model.BaiViet.IDTapChiBaiViet })">Tải file</a>
                             }
                             else
                             {

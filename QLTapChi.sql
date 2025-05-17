@@ -64,7 +64,7 @@ CREATE TABLE TapChiBaiViet (
     TacGia NVARCHAR(300) NOT NULL,
     NoiDung NVARCHAR(MAX)NOT NULL,
     IDLinhVuc INT NOT NULL,
-    TrangThai INT DEFAULT 0,  -- 0: Chờ duyệt, 1: Đã duyệt, 2: đã phan công phản biện, 3:Xuất bản
+    TrangThai INT DEFAULT 0,  -- 0: Chờ duyệt, 1: Đã duyệt, 2: đã phan công phản biện, 3:Xuất bản,5 
     NgayGui DATE NOT NULL DEFAULT GETDATE(),
 	TuKhoa nvarchar(300),	
 	IDNguoiGui INT,
@@ -111,7 +111,7 @@ CREATE TABLE PhanCongBienTap (
     IDTapChiBaiViet INT NOT NULL,
     NgayPhanCong DATE NOT NULL DEFAULT GETDATE(),
     GhiChu NVARCHAR(300) NULL,
-	TrangThai INT DEFAULT 0,-- 0 chưa phản hồi, 1 nhận,2 từ chối
+	TrangThai INT DEFAULT 0,-- 0 chưa phản hồi, 1 nhận,2 từ chối, 3 chỉnh sửa
     FOREIGN KEY (IDBienTapVien) REFERENCES BienTapVien(IDBienTapVien),
     FOREIGN KEY (IDTapChiBaiViet) REFERENCES TapChiBaiViet(IDTapChiBaiViet)
 );
@@ -156,79 +156,8 @@ FOREIGN KEY (IDSoTapChi) REFERENCES SoTapChi(IDSoTapChi)
 INSERT INTO VaiTro (TenVaiTro) VALUES (N'Phản Biện');
 */
 -- Kiểm tra dữ liệu đã được thêm vào chưa
-
+select *from PhanBien
+select *from PhanCong
 select * from NguoiDung
 select * from BienTapVien
 select * from TapChiBaiViet
-INSERT INTO SoTapChi (TenSo, ChuDe, NgayPhatHanh, MoTa)
-VALUES (N'Số 1/2025', N'Khoa học và Công nghệ', '2025-01-01', N'Mô tả số 1');
-
-USE QLTapChi;
-GO
-
--- Insert into NguoiDung (Authors/Submitters)
-INSERT INTO NguoiDung (HoTen, Email, MatKhau, SDT, DiaChi, QuocGia, ChucDanh, GioiTinh, ToChuc, PhanBien, IDLinhVuc)
-VALUES 
-    (N'Đặng Duy Thanh', 'dangduythanh@example.com', '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5', '0123456781', N'Cần Thơ', N'Việt Nam', N'Giảng viên', 1, N'ĐH Nam Cần Thơ', 0, 1),
-    (N'Đào Đình Kiên', 'daodinhkien@example.com', '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5', '0123456782', N'Cần Thơ', N'Việt Nam', N'Nghiên cứu sinh', 1, N'ĐH Nam Cần Thơ', 0, 1),
-    (N'Trần Thị D', 'tranthid@example.com', '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5', '0123456783', N'Hồ Chí Minh', N'Việt Nam', N'Tiến sĩ', 0, N'ĐH Nông Lâm', 1, 1);
-
--- Insert into BienTapVien (Editors)
-INSERT INTO BienTapVien (HoTen, Email, MatKhau, SDT, DiaChi, QuocGia, ChuyenNganh, LoaiBienTapVien)
-VALUES 
-    (N'Lê Thị B', 'lethib@example.com', '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5', '0987654322', N'Hồ Chí Minh', N'Việt Nam', N'Nông nghiệp', N'BienTapVien'),
-    (N'Phạm Văn C', 'phamvanc@example.com', '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5', '0987654323', N'Hà Nội', N'Việt Nam', N'Công nghệ', N'TongBienTap');
-
--- Insert into LinhVuc (Fields of Study)
-INSERT INTO LinhVuc (TenLinhVuc)
-VALUES 
-    (N'Công nghệ Thông tin'),
-    (N'Khoa học Môi trường');
-
--- Insert into SoTapChi (Journal Issues)
-INSERT INTO SoTapChi (TenSo, ChuDe, NgayPhatHanh, MoTa)
-VALUES 
-    (N'Số 2/2025', N'Nông nghiệp và Phát triển Bền vững', '2025-03-01', N'Mô tả số 2'),
-    (N'Số 3/2025', N'Công nghệ và Đổi mới', '2025-05-01', N'Mô tả số 3');
-
--- Insert into TapChiBaiViet (Articles)
--- Assuming IDLinhVuc=1 is 'Nông nghiệp', IDLinhVuc=3 is 'Công nghệ Thông tin', and NguoiDung IDs are auto-incremented starting from the last inserted ID.
-INSERT INTO TapChiBaiViet (TieuDe, TacGia, DongTacGia, NoiDung, IDLinhVuc, TrangThai, NgayGui, TomTat, TuKhoa, IDNguoiGui, TrangThaiPhanBien)
-VALUES 
-    (N'Ứng dụng IoT trong nông nghiệp thông minh', 
-     N'Đặng Duy Thanh', 
-     N'Đặng Duy Thanh, Nguyễn Trúc Anh', 
-     N'Content/BaiViet/iot_nongnghiep.pdf', 
-     1, 
-     3, -- Published
-     '2025-02-01', 
-     N'Bài báo nghiên cứu ứng dụng IoT để tối ưu hóa quy trình trồng trọt...', 
-     N'IoT, nông nghiệp, công nghệ', 
-     (SELECT MAX(IDNguoiDung) FROM NguoiDung WHERE Email = 'dangduythanh@example.com'), 
-     2), -- Published after review
-    (N'Phát triển hệ thống quản lý môi trường dựa trên AI', 
-     N'Trần Thị D', 
-     N'Trần Thị D, Đào Đình Kiên', 
-     N'Content/BaiViet/ai_moitruong.pdf', 
-     3, 
-     3, -- Published
-     '2025-04-01', 
-     N'Bài báo đề xuất hệ thống AI để giám sát và quản lý chất lượng môi trường...', 
-     N'AI, môi trường, công nghệ', 
-     (SELECT MAX(IDNguoiDung) FROM NguoiDung WHERE Email = 'tranthid@example.com'), 
-     2);
-
--- Insert into XuatBan (Publications)
--- Assuming BienTapVien IDs are auto-incremented, and SoTapChi IDs are from the newly inserted issues.
-INSERT INTO XuatBan (SoTapChi, NgayXuatBan, IDTapChiBaiViet, IDBienTapVien, IDSoTapChi)
-VALUES 
-    (N'Số 2/2025', 
-     '2025-03-01', 
-     (SELECT MAX(IDTapChiBaiViet) FROM TapChiBaiViet WHERE TieuDe = N'Ứng dụng IoT trong nông nghiệp thông minh'), 
-     (SELECT MAX(IDBienTapVien) FROM BienTapVien WHERE Email = 'lethib@example.com'), 
-     (SELECT MAX(IDSoTapChi) FROM SoTapChi WHERE TenSo = N'Số 2/2025')),
-    (N'Số 3/2025', 
-     '2025-05-01', 
-     (SELECT MAX(IDTapChiBaiViet) FROM TapChiBaiViet WHERE TieuDe = N'Phát triển hệ thống quản lý môi trường dựa trên AI'), 
-     (SELECT MAX(IDBienTapVien) FROM BienTapVien WHERE Email = 'phamvanc@example.com'), 
-     (SELECT MAX(IDSoTapChi) FROM SoTapChi WHERE TenSo = N'Số 3/2025'));

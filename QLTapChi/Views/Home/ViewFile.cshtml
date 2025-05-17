@@ -1,0 +1,83 @@
+﻿@{
+    ViewBag.Title = "Xem File - Tạp chí Khoa học Đại học Nam Cần Thơ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .file-view-section {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+        .file-view-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+    .file-frame {
+        width: 100%;
+        height: 80vh;
+        border: none;
+    }
+
+    .file-image {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .error-message {
+        font-size: 1rem;
+        color: #d9534f;
+        margin-top: 20px;
+    }
+
+    .back-link {
+        display: inline-block;
+        margin-bottom: 20px;
+        color: #007bff;
+        text-decoration: none;
+        font-size: 1rem;
+    }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+    .download-link {
+        display: inline-block;
+        margin-top: 10px;
+        color: #28a745;
+        text-decoration: none;
+        font-size: 1rem;
+    }
+
+        .download-link:hover {
+            text-decoration: underline;
+        }
+</style>
+
+<div class="container file-view-section">
+    <a href="@Url.Action("FileViewer", "Home")" class="back-link">Quay lại danh sách</a>
+    <h3>Xem File - Tạp chí Khoa học Đại học Nam Cần Thơ</h3>
+
+    @if (ViewBag.FileUrl != null)
+    {
+        if (ViewBag.FileType == "pdf")
+        {
+            <iframe class="file-frame" src="@ViewBag.FileUrl" loading="lazy"></iframe>
+        }
+        else if (ViewBag.FileType == "jpg" || ViewBag.FileType == "jpeg" || ViewBag.FileType == "png" || ViewBag.FileType == "gif")
+        {
+            <img class="file-image" src="@ViewBag.FileUrl" alt="File preview" />
+        }
+        else
+        {
+            <p class="error-message">Không hỗ trợ xem trực tiếp loại file này (@ViewBag.FileType). Vui lòng tải xuống để xem.</p>
+            <a href="@ViewBag.FileUrl" class="download-link" target="_blank">Tải xuống file</a>
+        }
+    }
+    else
+    {
+        <p class="error-message">@ViewBag.ErrorMessage</p>
+    }
+</div>

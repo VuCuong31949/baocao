@@ -1,0 +1,101 @@
+﻿@model QLTapChi.Models.HoiDongBienTapViewModel
+
+@{
+    ViewBag.Title = "Hội đồng Biên tập";
+}
+
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+        }
+
+        h1, h4, h4 {
+            color: #2c3e50;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .member {
+            margin: 5px 0;
+        }
+
+            .member span {
+                font-style: italic;
+                color: #7f8c8d;
+            }
+    </style>
+
+    <div class="container">
+        <h2>Hội đồng Biên tập</h2>
+
+        <div class="section">
+            <h4>Tổng Biên tập</h4>
+            @if (Model.TongBienTap != null)
+            {
+                <div class="member">
+                    @Model.TongBienTap.HoTen
+                    <span>
+                        (@(Model.TongBienTap.DiaChi ?? "Không có địa chỉ"), @(Model.TongBienTap.QuocGia ?? "Không có quốc gia"))
+                    </span>
+                </div>
+            }
+            else
+            {
+                <p>Chưa có Tổng Biên tập.</p>
+            }
+        </div>
+
+        <div class="section">
+            <h4>Phó Tổng Biên tập</h4>
+            @if (Model.PhoTongBienTap != null)
+            {
+                <div class="member">
+                    @Model.PhoTongBienTap.HoTen
+                    <span>
+                        (@(Model.PhoTongBienTap.DiaChi ?? "Không có địa chỉ"), @(Model.PhoTongBienTap.QuocGia ?? "Không có quốc gia"))
+                    </span>
+                </div>
+            }
+            else
+            {
+                <p>Chưa có Phó Tổng Biên tập.</p>
+            }
+        </div>
+
+        <div class="section">
+            <h4>Thành viên Hội đồng Biên tập</h4>
+            @if (Model.ChuyenNganhs != null && Model.ChuyenNganhs.Any())
+            {
+                foreach (var chuyenNganh in Model.ChuyenNganhs)
+                {
+                    <h5>@(chuyenNganh.TenChuyenNganh ?? "Không có chuyên ngành")</h5>
+                    if (chuyenNganh.ThanhViens != null && chuyenNganh.ThanhViens.Any()) // Removed @ before if
+                    {
+                        foreach (var member in chuyenNganh.ThanhViens)
+                        {
+                            <div class="member">
+                                @member.HoTen
+                                <span>
+                                    (@(member.DiaChi ?? "Không có địa chỉ"), @(member.QuocGia ?? "Không có quốc gia"))
+                                </span>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p>Chưa có thành viên trong chuyên ngành này.</p>
+                    }
+                }
+            }
+            else
+            {
+                <p>Chưa có chuyên ngành nào.</p>
+            }
+        </div>
+
+    </div>

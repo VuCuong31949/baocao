@@ -367,7 +367,35 @@ namespace QLTapChi.Areas.Admin.Controllers
                     baiViet.TrangThai = 3; // Xuất bản
                     baiViet.TrangThaiPhanBien = 5; // Đã xuất bản
 
-                    db.XuatBans.Add(xuatBan);
+                    // Gửi email thông báo cho tác giả
+                    var tacGia = db.NguoiDungs.FirstOrDefault(n => n.IDNguoiDung == baiViet.IDNguoiGui);
+                    if (tacGia != null)
+                    {
+                        string emailContent = System.IO.File.ReadAllText(Server.MapPath("~/Content/ThongBao_XB.html"));
+                        emailContent = emailContent
+                            .Replace("{{IDXuatBan}}", xuatBan.IDXuatBan.ToString())
+                            .Replace("{{TenTacGia}}", tacGia.HoTen)
+                            .Replace("{{TieuDeBaiViet}}", baiViet.TieuDe)
+                            .Replace("{{TacGia}}", baiViet.TacGia)
+                            .Replace("{{TenSo}}", soTapChi.TenSo)
+                            .Replace("{{NgayXuatBan}}", xuatBan.NgayXuatBan.ToString("dd/MM/yyyy"))
+                            .Replace("{{LinkXuatBan}}", Url.Action("DangNhap", "TaiKhoan", new { area = "" }, Request.Url.Scheme))
+                   
+                            .Replace("{{Email}}", tacGia.Email);
+
+                        bool emailSent = SendMail.sendMail(
+                            name: "Hệ thống QLTapChi",
+                            subject: $"Thông báo xuất bản bài viết #{xuatBan.IDXuatBan}",
+                            content: emailContent,
+                            toMail: tacGia.Email
+                        );
+
+                        if (!emailSent)
+                        {
+                            TempData["Warning"] = $"Xuất bản thành công, nhưng gửi email thông báo thất bại cho bài viết ID {id}.";
+                        }
+                        db.XuatBans.Add(xuatBan);
+                    }
                 }
             }
 

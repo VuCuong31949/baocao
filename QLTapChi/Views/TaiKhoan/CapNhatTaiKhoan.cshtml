@@ -34,8 +34,8 @@
                             <div class="form-group">
                                 @Html.LabelFor(model => model.GioiTinh, htmlAttributes: new { @class = "form-label fw-bold" })
                                 <select class="form-control" id="GioiTinh" name="GioiTinh">
-                                    <option value="0" @(Model.GioiTinh == 1 ? "selected" : "")>Nam</option>
-                                    <option value="1" @(Model.GioiTinh == 0 ? "selected" : "")>Nữ</option>
+                                    <option value="0" @(Model.GioiTinh == 0 ? "selected" : "")>Nam</option>
+                                    <option value="1" @(Model.GioiTinh == 1 ? "selected" : "")>Nữ</option>
                                 </select>
                                 @Html.ValidationMessageFor(model => model.GioiTinh, "", new { @class = "text-danger small" })
                             </div>

@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 
 namespace QLTapChi.Areas.Admin.Controllers
 {
@@ -106,7 +107,42 @@ namespace QLTapChi.Areas.Admin.Controllers
             };
             db.PhanCongBienTaps.Add(phanCong);
             db.SaveChanges();
+            var bienTapVien = db.BienTapViens.FirstOrDefault(b => b.IDBienTapVien == idBienTapVien);
+            string filePath = HttpContext.Server.MapPath("~/Content/NhanBaiViet.html");
+            string content;
+            if (System.IO.File.Exists(filePath))
+            {
+                content = System.IO.File.ReadAllText(filePath);
+            }
+            else
+            {
+                TempData["Error"] = "Không tìm thấy file template email.";
+                return RedirectToAction("BaiVietChoDuyet");
+            }
 
+            // Thay thế các placeholder trong template
+            content = content.Replace("{{IDPhanCong}}", phanCong.IDPhanCongBienTap.ToString());
+            content = content.Replace("{{TenBienTapVien}}", bienTapVien.HoTen);
+            content = content.Replace("{{TieuDeBaiViet}}", baiViet.TieuDe);
+            content = content.Replace("{{TacGia}}", baiViet.TacGia);
+            content = content.Replace("{{TenLinhVuc}}", (baiViet.LinhVuc != null ? baiViet.LinhVuc.TenLinhVuc : "Chưa xác định"));
+            content = content.Replace("{{NgayGui}}", baiViet.NgayGui.ToString("dd/MM/yyyy"));
+            content = content.Replace("{{NgayPhanCong}}", phanCong.NgayPhanCong.ToString("dd/MM/yyyy"));
+            content = content.Replace("{{LinkDangNhap}}", Url.Action("DangNhap", "TaiKhoan", new { area = "" }, Request.Url.Scheme));
+            content = content.Replace("{{Email}}", bienTapVien.Email);
+
+            // Gửi email
+            bool emailSent = SendMail.sendMail(
+                name: "Hệ thống Quản Lý Tạp Chí",
+                subject: $"Thông Báo Nhận Bài Viết: #{phanCong.IDPhanCongBienTap}",
+                content: content,
+                toMail: bienTapVien.Email
+            );
+
+            if (!emailSent)
+            {
+                TempData["Warning"] = "Phân công thành công, nhưng gửi email thất bại.";
+            }
             TempData["Success"] = "Phân công biên tập viên thành công.";
             return RedirectToAction("BaiVietChoDuyet");
         }
@@ -160,11 +196,11 @@ namespace QLTapChi.Areas.Admin.Controllers
             }
 
             // Kiểm tra đã duyệt chưa
-            if (baiViet.TrangThai != 1)
-            {
-                TempData["Error"] = "Bài viết này đã được duyệt hoặc xử lý trước đó!";
-                return RedirectToAction("BaiVietChoPhanBien");
-            }
+            //if (baiViet.TrangThai != 1)
+            //{
+            //    TempData["Error"] = "Bài viết này đã được duyệt hoặc xử lý trước đó!";
+            //    return RedirectToAction("BaiVietChoPhanBien");
+            //}
 
             // Kiểm tra đã phân công chưa
             bool daPhanCong = db.PhanCongs.Any(p => p.IDTapChiBaiViet == idBaiViet && p.IDNguoiPhanBien == idPhanBien);

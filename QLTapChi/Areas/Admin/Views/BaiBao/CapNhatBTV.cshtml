@@ -1,0 +1,106 @@
+﻿@model QLTapChi.Models.BienTapVien
+@using QLTapChi.Models;
+@{
+    ViewBag.Title = "CapNhatBTV";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>CẬP NHẬT BIÊN TẬP VIÊN</h2>
+
+@if (Model == null)
+{
+    <p>Không tìm thấy biên tập viên để cập nhật.</p>
+}
+else
+{
+    using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <input type="hidden" name="IDBienTapVien" value="@Session["idUser"]" />
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.HoTen, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.HoTen, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.HoTen, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.MatKhau, htmlAttributes: new { @class = "form-label fw-bold" })
+                        <input type="password" class="form-control" id="MatKhau" name="MatKhau" value="@(Model.MatKhau ?? "")" />
+                        @Html.ValidationMessageFor(model => model.MatKhau, "", new { @class = "text-danger small" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.SDT, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.SDT, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.SDT, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DiaChi, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.DiaChi, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.DiaChi, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.QuocGia, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.QuocGia, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.QuocGia, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ChuyenNganh, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <select class="form-control" name="ChuyenNganh">
+                        @foreach (var item in ViewBag.LinhVucList as List<LinhVuc>)
+                        {
+                            if (item.TenLinhVuc == Model.ChuyenNganh)
+                            {
+                                <option value="@item.TenLinhVuc" selected>@item.TenLinhVuc</option>
+                            }
+                            else
+                            {
+                                <option value="@item.TenLinhVuc">@item.TenLinhVuc</option>
+                            }
+                        }
+                    </select>
+                    @Html.ValidationMessageFor(model => model.ChuyenNganh, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    }
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
